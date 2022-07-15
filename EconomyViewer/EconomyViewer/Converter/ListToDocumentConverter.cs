@@ -17,7 +17,7 @@ internal class ListToDocumentConverter : IValueConverter
 
         List<Item> items = (List<Item>)value;
         FlowDocument document = new FlowDocument();
-        foreach (Item item in items)
+        foreach (var item in items)
         {
             document.Blocks.Add(new Paragraph(new Run(item.ToString())));
         }

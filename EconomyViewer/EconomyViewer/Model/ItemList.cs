@@ -6,10 +6,9 @@ using System.Linq;
 namespace EconomyViewer.Model;
 internal class ItemList : IEnumerable<Item>, ICollection<Item>
 {
-    private List<Item> _items;
+    private readonly List<Item> _items;
 
-    public Item this[int index]
-    {
+    public Item this[int index] {
         get => _items[index];
         set => _items[index] = value;
     }
@@ -18,12 +17,12 @@ internal class ItemList : IEnumerable<Item>, ICollection<Item>
         _items = new List<Item>();
     }
 
-    public int Count { get => _items.Count; }
-    public bool IsReadOnly { get => false; }
+    public int Count => _items.Count;
+    public bool IsReadOnly => false;
 
     public void Add(Item item)
     {
-        Item? same = _items.FirstOrDefault(i => i.Equals(item));
+        var same = _items.FirstOrDefault(i => i.Equals(item));
 
         if (same == null)
             _items.Add((Item)item.Clone());
@@ -53,7 +52,7 @@ internal class ItemList : IEnumerable<Item>, ICollection<Item>
 
     public bool Remove(Item item)
     {
-        Item? same = _items.FirstOrDefault(i => i.Equals(item));
+        var same = _items.FirstOrDefault(i => i.Equals(item));
         if (same == null)
             throw new ArgumentException("Collection does not contains element.");
 

@@ -2,10 +2,10 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows;
 
 namespace EconomyViewer;
 public class FilteredComboBox : ComboBox
@@ -22,8 +22,7 @@ public class FilteredComboBox : ComboBox
     [Description("Length of the search string that triggers filtering.")]
     [Category("Filtered ComboBox")]
     [DefaultValue(int.MaxValue)]
-    public int MinimumSearchLength
-    {
+    public int MinimumSearchLength {
         [DebuggerStepThrough]
         get => (int)GetValue(MinimumSearchLengthProperty);
 
@@ -36,13 +35,13 @@ public class FilteredComboBox : ComboBox
     {
         if (newValue != null)
         {
-            ICollectionView view = CollectionViewSource.GetDefaultView(newValue);
+            var view = CollectionViewSource.GetDefaultView(newValue);
             view.Filter += FilterPredicate;
         }
 
         if (oldValue != null)
         {
-            ICollectionView view = CollectionViewSource.GetDefaultView(oldValue);
+            var view = CollectionViewSource.GetDefaultView(oldValue);
             view.Filter -= FilterPredicate;
         }
 
@@ -110,7 +109,9 @@ public class FilteredComboBox : ComboBox
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         if (e.Key is Key.Tab or Key.Enter)
+        {
             IsDropDownOpen = false;
+        }
         else if (e.Key == Key.Escape)
         {
             IsDropDownOpen = false;
@@ -166,7 +167,7 @@ public class FilteredComboBox : ComboBox
     {
         if (ItemsSource != null)
         {
-            ICollectionView view = CollectionViewSource.GetDefaultView(ItemsSource);
+            var view = CollectionViewSource.GetDefaultView(ItemsSource);
             view.Refresh();
         }
     }

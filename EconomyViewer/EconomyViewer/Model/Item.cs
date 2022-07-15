@@ -37,7 +37,7 @@ internal class Item : ICloneable
     {
         if (_itemPattern.IsMatch(value))
         {
-            GroupCollection? comp = _itemPattern.Match(value).Groups;
+            var comp = _itemPattern.Match(value).Groups;
             string header = comp["Header"].Value.TrimStart(' ', '\t');
             int count = Convert.ToInt32(comp["Count"].Value);
             int price = Convert.ToInt32(comp["Price"].Value);
