@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using EconomyViewer.Model;
 
 using HtmlAgilityPack;
 
 namespace EconomyViewer.Utils;
 
-internal class ForumDataParser
+internal static class ForumDataParser
 {
+    private static Dictionary<string, string>? _serverToLink;
     public static Dictionary<string, string> GetServerNamesToLinks()
     {
+        if (_serverToLink != null)
+            return _serverToLink;
+
         HtmlWeb web = new HtmlWeb();
         HtmlDocument serversPage = new HtmlDocument();
         serversPage.LoadHtml(web.Load(@"https://f.simpleminecraft.ru/index.php?/forum/49-jekonomika/").Text);
@@ -22,7 +25,27 @@ internal class ForumDataParser
             })
             .ToList();
 
-        return new Dictionary<string, string>(links
-            .Select(link => new KeyValuePair<string, string>(link.InnerText.Trim().Split()[1], link.Attributes["href"].Value)));
+        _serverToLink = new Dictionary<string, string>(links.Select(link => new KeyValuePair<string, string>(link.InnerText.Trim().Split()[1], link.Attributes["href"].Value)));
+        return _serverToLink;
+    }
+    public static List<Item> GetServerItemList(string serverName)
+    {
+        HtmlWeb web = new HtmlWeb();
+        HtmlDocument page = new HtmlDocument();
+        page.LoadHtml(web.Load(GetServerNamesToLinks()[serverName]).Text);
+        string currentMod = "";
+        List<Item> result = new List<Item>();
+        var post = page.DocumentNode.SelectSingleNode(@"//div[@data-role=""commentContent""]");
+        var lines = post.InnerText.Split("\n").Select(l => l.Trim()).Where(l => l.Length > 0);
+        foreach (string line in lines)
+        {
+            Item? item = Item.FromString(line, currentMod);
+            if (item == null)
+                currentMod = line.Replace(":", "");
+            else
+                result.Add(item);
+
+        }
+        return result;
     }
 }
