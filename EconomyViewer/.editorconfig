@@ -107,7 +107,7 @@ csharp_preferred_modifier_order = public,private,protected,internal,static,exter
 # Code-block preferences
 csharp_prefer_braces = when_multiline
 csharp_prefer_simple_using_statement = true
-csharp_style_namespace_declarations = block_scoped:suggestion
+csharp_style_namespace_declarations = block_scoped:none
 
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true:warning
@@ -266,3 +266,9 @@ dotnet_naming_style._underscope.required_prefix = _
 dotnet_naming_style._underscope.required_suffix = 
 dotnet_naming_style._underscope.word_separator = 
 dotnet_naming_style._underscope.capitalization = camel_case
+
+# CS8618: Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+dotnet_diagnostic.CS8618.severity = suggestion
+
+# IDE0160: Convert to block scoped namespace
+dotnet_diagnostic.IDE0160.severity = none
