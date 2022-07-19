@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 
+using EconomyViewer.DB;
 using EconomyViewer.Properties;
+using EconomyViewer.Utils;
 
 namespace EconomyViewer;
 /// <summary>
@@ -17,6 +20,15 @@ public partial class App : Application
         ServerChanged += (server) => {
             Debug.WriteLine("Selected server: " + server);
         };
+        using ApplicationContext context = new ApplicationContext();
+        if (context.Items!.Any() == false)
+        {
+            foreach (string serverName in ForumDataParser.GetServerNamesToLinks().Keys)
+            {
+                context.Items!.AddRange(ForumDataParser.GetServerItemList(serverName).Select(i => i.AsDto(serverName)));
+            }
+            context.SaveChanges();
+        }
     }
 
     public static string Server {
