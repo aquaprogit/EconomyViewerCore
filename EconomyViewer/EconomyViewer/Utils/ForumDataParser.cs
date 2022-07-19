@@ -33,18 +33,20 @@ internal static class ForumDataParser
         HtmlWeb web = new HtmlWeb();
         HtmlDocument page = new HtmlDocument();
         page.LoadHtml(web.Load(GetServerNamesToLinks()[serverName]).Text);
-        string currentMod = "";
+        
         List<Item> result = new List<Item>();
+        
         var post = page.DocumentNode.SelectSingleNode(@"//div[@data-role=""commentContent""]");
         var lines = post.InnerText.Split("\n").Select(l => l.Trim()).Where(l => l.Length > 0);
+
+        string currentMod = "";
         foreach (string line in lines)
         {
             Item? item = Item.FromString(line, currentMod);
             if (item == null)
-                currentMod = line.Replace(":", "");
+                currentMod = line.TrimEnd(':', '*').Replace("&amp; ", "");
             else
                 result.Add(item);
-
         }
         return result;
     }
