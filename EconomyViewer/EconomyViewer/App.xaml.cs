@@ -26,14 +26,14 @@ public partial class App : Application
 
     public static async void FillContextAsync()
     {
-        ApplicationContext context = new ApplicationContext();
-        if (context.Items!.Any() == false)
+
+        if (ApplicationContext.Context.Items!.Any() == false)
         {
             foreach (string serverName in ForumDataParser.GetServerNamesToLinks().Keys)
             {
-                context.Items!.AddRange(await Task.Run(() => ForumDataParser.GetServerItemList(serverName).Select(i => i.AsDto(serverName))));
+                ApplicationContext.Context.Items!.AddRange(await Task.Run(() => ForumDataParser.GetServerItemList(serverName).Select(i => i.AsDto(serverName))));
             }
-            context.SaveChanges();
+            ApplicationContext.Context.SaveChanges();
         }
     }
 

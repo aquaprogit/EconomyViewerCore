@@ -25,7 +25,10 @@ internal static class ForumDataParser
             })
             .ToList();
 
-        _serverToLink = new Dictionary<string, string>(links.Select(link => new KeyValuePair<string, string>(link.InnerText.Trim().Split()[1], link.Attributes["href"].Value)));
+        _serverToLink =
+            new Dictionary<string, string>(links.Select(link =>
+                new KeyValuePair<string, string>(link.InnerText.Trim().Split()[1], link.Attributes["href"].Value)));
+
         return _serverToLink;
     }
     public static List<Item> GetServerItemList(string serverName)
@@ -33,9 +36,9 @@ internal static class ForumDataParser
         HtmlWeb web = new HtmlWeb();
         HtmlDocument page = new HtmlDocument();
         page.LoadHtml(web.Load(GetServerNamesToLinks()[serverName]).Text);
-        
+
         List<Item> result = new List<Item>();
-        
+
         var post = page.DocumentNode.SelectSingleNode(@"//div[@data-role=""commentContent""]");
         var lines = post.InnerText.Split("\n").Select(l => l.Trim()).Where(l => l.Length > 0);
 
