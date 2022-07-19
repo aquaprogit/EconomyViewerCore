@@ -5,6 +5,7 @@ namespace EconomyViewer.Model;
 internal class Item : ICloneable
 {
     private static readonly Regex _itemPattern = new Regex(@"(?<Header>.+)\s(?<Count>[0-9]+) шт. - (?<Price>[0-9]+)$");
+    private static readonly Regex _singleItemPattent = new Regex(@"(?<Header>.+)\W+(?<Price>\d+)");
     public int ID { get; init; }
     public string Header { get; init; } = string.Empty;
     public int Count { get; private set; }
@@ -35,15 +36,14 @@ internal class Item : ICloneable
     }
     public static Item? FromString(string value, string mod)
     {
-        if (_itemPattern.IsMatch(value))
-        {
-            var comp = _itemPattern.Match(value).Groups;
-            string header = comp["Header"].Value.TrimStart(' ', '\t');
-            int count = Convert.ToInt32(comp["Count"].Value);
-            int price = Convert.ToInt32(comp["Price"].Value);
-            return new Item(header, count, price, mod);
-        }
-        return null;
+        if (_itemPattern.IsMatch(value) == false && _singleItemPattent.IsMatch(value) == false)
+            return null;
+        var pattern = _itemPattern.IsMatch(value) ? _itemPattern : _singleItemPattent;
+        var groups = pattern.Match(value).Groups;
+        string header = groups["Header"].Value.TrimStart(' ', '\t');
+        int count = _itemPattern.IsMatch(value) ? Convert.ToInt32(groups["Count"].Value) : 1;
+        int price = Convert.ToInt32(groups["Price"].Value);
+        return new Item(header, count, price, mod);
     }
     public void IncreaseCount(int value)
     {
