@@ -2,6 +2,8 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using EconomyViewer.ViewModel;
+
 namespace EconomyViewer;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
@@ -10,8 +12,11 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
+        ServerViewModel = new ServerViewModel();
+        DataContext = this;
         InitializeComponent();
     }
+    public ServerViewModel ServerViewModel { get; set; }
     private void WorkingPanel_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
 

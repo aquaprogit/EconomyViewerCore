@@ -26,7 +26,6 @@ public partial class App : Application
 
     public static async void FillContextAsync()
     {
-
         if (ApplicationContext.Context.Items!.Any() == false)
         {
             foreach (string serverName in ForumDataParser.GetServerNamesToLinks().Keys)

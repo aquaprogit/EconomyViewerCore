@@ -197,8 +197,8 @@
                                                Text="Сервер:" />
                                     <ComboBox Grid.Row="1"
                                               DataContext="{Binding ServerViewModel}"
-                                              ItemsSource="{Binding Servers}"
-                                              SelectedItem="{Binding Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding Path=Servers}"
+                                              SelectedItem="{Binding SelectedServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               HorizontalAlignment="Left"
                                               Height="Auto"
                                               VerticalAlignment="Center"
@@ -376,10 +376,10 @@
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="Количество:" />
                                         <tool:IntegerUpDown x:Name="MainSelectedItemCount_IntUpDown"
-                                                             Grid.Column="1"
-                                                             HorizontalAlignment="Left"
-                                                             VerticalAlignment="Center"
-                                                             FontSize="26" />
+                                                            Grid.Column="1"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontSize="26" />
                                     </Grid>
                                     <Grid Grid.Row="2">
                                         <Grid.ColumnDefinitions>
@@ -623,15 +623,15 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Количество:" />
                                             <tool:IntegerUpDown x:Name="ItemToEditCount_IntUpDown"
-                                                                 Grid.Column="1"
-                                                                 HorizontalAlignment="Left"
-                                                                 DefaultValue="1"
-                                                                 DataContext="{Binding ItemViewModel}"
-                                                                 Value="{Binding SelectedItem.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                 Minimum="1"
-                                                                 Height="45"
-                                                                 VerticalAlignment="Center"
-                                                                 IsEnabled="True" />
+                                                                Grid.Column="1"
+                                                                HorizontalAlignment="Left"
+                                                                DefaultValue="1"
+                                                                DataContext="{Binding ItemViewModel}"
+                                                                Value="{Binding SelectedItem.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                Minimum="1"
+                                                                Height="45"
+                                                                VerticalAlignment="Center"
+                                                                IsEnabled="True" />
                                         </Grid>
                                         <Grid Grid.Row="2">
                                             <Grid.ColumnDefinitions>
@@ -640,15 +640,15 @@
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Цена:" />
                                             <tool:IntegerUpDown x:Name="ItemToEditPrice_IntUpDown"
-                                                                 Grid.Column="1"
-                                                                 Width="Auto"
-                                                                 DataContext="{Binding ItemViewModel}"
-                                                                 HorizontalAlignment="Left"
-                                                                 Minimum="1"
-                                                                 Height="45"
-                                                                 VerticalAlignment="Center"
-                                                                 VerticalContentAlignment="Center"
-                                                                 Value="{Binding SelectedItem.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                Grid.Column="1"
+                                                                Width="Auto"
+                                                                DataContext="{Binding ItemViewModel}"
+                                                                HorizontalAlignment="Left"
+                                                                Minimum="1"
+                                                                Height="45"
+                                                                VerticalAlignment="Center"
+                                                                VerticalContentAlignment="Center"
+                                                                Value="{Binding SelectedItem.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </Grid>
                                         <Grid Grid.Row="3">
                                             <Grid.ColumnDefinitions>
@@ -897,7 +897,8 @@
                                                 <ColumnDefinition Width="34*" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Количество:" />
-                                            <tool:IntegerUpDown x:Name="ToAddItemCount_IntUpDown" Value="1" />
+                                            <tool:IntegerUpDown x:Name="ToAddItemCount_IntUpDown"
+                                                                Value="1" />
                                         </Grid>
                                         <Grid Grid.Row="2">
                                             <Grid.ColumnDefinitions>
