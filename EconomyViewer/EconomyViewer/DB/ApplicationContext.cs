@@ -10,7 +10,6 @@ internal class ApplicationContext : DbContext
     public DbSet<ItemDto>? Items { get; set; }
     public ApplicationContext()
     {
-        Database.EnsureDeleted();
         Database.EnsureCreated();
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
