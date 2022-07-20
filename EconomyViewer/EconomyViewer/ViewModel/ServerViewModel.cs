@@ -3,6 +3,8 @@ using System.Linq;
 
 using EconomyViewer.DB;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace EconomyViewer.ViewModel;
 
 public class ServerViewModel : ViewModelBase
@@ -16,6 +18,14 @@ public class ServerViewModel : ViewModelBase
 
     public string SelectedServer {
         get => _selectedServer ??= Servers.First();
-        set => _selectedServer = value;
+        set {
+            _selectedServer = value;
+            OnPropertyChanged(nameof(Mods));
+        }
     }
+
+    public List<string> Mods => ApplicationContext.Context.Items?.Where(c => c.ServerName == SelectedServer)
+                                                                 .Select(c => c.Mod)
+                                                                 .Distinct()
+                                                                 .ToList() ?? new List<string>();
 }

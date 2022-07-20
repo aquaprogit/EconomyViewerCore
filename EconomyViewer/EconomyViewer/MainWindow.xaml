@@ -24,6 +24,7 @@
         <converters:CountToBoolConverter x:Key="countToBoolConverter" />
         <converters:ListToDocumentConverter x:Key="listToDocumentConverter" />
         <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <converters:StringsToCheckBoxesConverter x:Key="stringsToCheckBoxesConverter" />
         <Style TargetType="Image">
             <Setter Property="RenderOptions.BitmapScalingMode"
                     Value="HighQuality" />
@@ -274,6 +275,8 @@
                                             <ListView x:Name="MainFilterList_ListView"
                                                       BorderBrush="{x:Null}"
                                                       BorderThickness="0"
+                                                      DataContext="{Binding ServerViewModel}"
+                                                      ItemsSource="{Binding Mods, Converter={StaticResource stringsToCheckBoxesConverter}}"
                                                       HorizontalContentAlignment="Stretch"
                                                       Background="{x:Null}">
                                                 <ListView.ItemContainerStyle>
