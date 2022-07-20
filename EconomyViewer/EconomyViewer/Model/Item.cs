@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 
 namespace EconomyViewer.Model;
-internal class Item : ICloneable
+public class Item : ICloneable
 {
     private static readonly Regex _itemPattern = new Regex(@"(?<Header>.+)\s(?<Count>[0-9]+) шт. - (?<Price>[0-9]+)$");
     private static readonly Regex _singleItemPattent = new Regex(@"(?<Header>.+)\W+(?<Price>\d+)");
@@ -12,6 +12,7 @@ internal class Item : ICloneable
     public int Price { get; private set; }
     public int PriceForOne => Price / Count;
     public string Mod { get; init; } = string.Empty;
+    public string? StringFormat => ToString();
 
     public Item() { }
     public Item(string header, int count, int price, string mod, int id = 0)

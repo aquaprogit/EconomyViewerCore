@@ -154,7 +154,8 @@
                         </Button.Background>
                     </Button>
                 </Grid>
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1"
+                      DataContext="{Binding ServerViewModel}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="45" />
                         <RowDefinition Height="*" />
@@ -197,8 +198,7 @@
                                     <TextBlock Grid.Row="0"
                                                Text="Сервер:" />
                                     <ComboBox Grid.Row="1"
-                                              DataContext="{Binding ServerViewModel}"
-                                              ItemsSource="{Binding Path=ServerNames}"
+                                              ItemsSource="{Binding ServerNames}"
                                               SelectedItem="{Binding SelectedServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               HorizontalAlignment="Left"
                                               Height="Auto"
@@ -222,7 +222,7 @@
                                                             IsTextSearchEnabled="False"
                                                             ItemsPanel="{StaticResource ItemsTemplate}"
                                                             ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                            SelectedItem="{Binding SelectedHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                            SelectedItem="{Binding SelectedItemHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                                             IsEditable="True"
                                                             IsTabStop="True" />
                                 </Grid>
@@ -275,7 +275,6 @@
                                             <ListView x:Name="MainFilterList_ListView"
                                                       BorderBrush="{x:Null}"
                                                       BorderThickness="0"
-                                                      DataContext="{Binding ServerViewModel}"
                                                       ItemsSource="{Binding Mods, Converter={StaticResource stringsToCheckBoxesConverter}}"
                                                       HorizontalContentAlignment="Stretch"
                                                       Background="{x:Null}">
@@ -308,8 +307,7 @@
                                     </GroupBox>
                                 </Grid>
                             </Grid>
-                            <Grid Grid.Column="2"
-                                  DataContext="{Binding ItemViewModel}">
+                            <Grid Grid.Column="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="2*" />
                                     <RowDefinition Height="5*" />
@@ -328,6 +326,7 @@
                                                       VerticalScrollBarVisibility="Hidden">
                                             <TextBox x:Name="MainToCopyValue_TextBox"
                                                      IsReadOnly="True"
+                                                     MinWidth="300"
                                                      HorizontalAlignment="Left"
                                                      VerticalAlignment="Center"
                                                      FontSize="26"
@@ -335,7 +334,7 @@
                                                      Grid.Column="0"
                                                      TextWrapping="Wrap"
                                                      Focusable="True"
-                                                     Text="{Binding SelectedItem, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                     Text="{Binding SelectedItem.StringFormat, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ScrollViewer>
                                         <Button x:Name="MainCopyValue_Button"
                                                 Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
@@ -380,6 +379,8 @@
                                         <TextBlock Text="Количество:" />
                                         <tool:IntegerUpDown x:Name="MainSelectedItemCount_IntUpDown"
                                                             Grid.Column="1"
+                                                            Minimum="1"
+                                                            Value="{Binding SelectedItem.Count, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                                             HorizontalAlignment="Left"
                                                             VerticalAlignment="Center"
                                                             FontSize="26" />
