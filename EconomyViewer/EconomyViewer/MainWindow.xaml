@@ -198,8 +198,8 @@
                                                Text="Сервер:" />
                                     <ComboBox Grid.Row="1"
                                               DataContext="{Binding ServerViewModel}"
-                                              ItemsSource="{Binding Path=Servers}"
-                                              SelectedItem="{Binding SelectedServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding Path=ServerNames}"
+                                              SelectedItem="{Binding SelectedServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               HorizontalAlignment="Left"
                                               Height="Auto"
                                               VerticalAlignment="Center"

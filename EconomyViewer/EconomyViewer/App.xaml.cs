@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 
 using EconomyViewer.DB;
+using EconomyViewer.Model;
 using EconomyViewer.Properties;
 using EconomyViewer.Utils;
 
@@ -26,14 +27,15 @@ public partial class App : Application
 
     public static async void FillContextAsync()
     {
-        if (ApplicationContext.Context.Items!.Any() == false)
+        var allServerNames = ForumDataParser.GetServerNamesToLinks().Keys.ToList() ?? new List<string>();
+        var alreadyApplied = ApplicationContext.Context.Servers?.Select(s => s.Name)
+                                                                .ToList() ?? new List<string>();
+
+        foreach (string serverName in allServerNames.Except(alreadyApplied))
         {
-            foreach (string serverName in ForumDataParser.GetServerNamesToLinks().Keys)
-            {
-                ApplicationContext.Context.Items!.AddRange(await Task.Run(() => ForumDataParser.GetServerItemList(serverName).Select(i => i.AsDto(serverName))));
-            }
-            ApplicationContext.Context.SaveChanges();
+            ApplicationContext.Context.Servers!.Add(await Task.Run(() => new Server(serverName, ForumDataParser.GetServerItemList(serverName))));
         }
+        ApplicationContext.Context.SaveChanges();
     }
 
     public static string Server {

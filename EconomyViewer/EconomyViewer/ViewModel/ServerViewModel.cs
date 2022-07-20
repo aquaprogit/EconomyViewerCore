@@ -2,6 +2,7 @@
 using System.Linq;
 
 using EconomyViewer.DB;
+using EconomyViewer.Model;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -9,23 +10,21 @@ namespace EconomyViewer.ViewModel;
 
 public class ServerViewModel : ViewModelBase
 {
-    private string _selectedServer;
+    private string? _selectedServerName;
+    private List<Server>? Servers => ApplicationContext.Context.Servers?.Include(s => s.Items).ToList();
+    private Server? SelectedServer => Servers?.FirstOrDefault(s => s.Name == SelectedServerName);
 
-    public List<string> Servers => ApplicationContext.Context.Items?.Select(c => c.ServerName)
-                                                                    .Distinct()
-                                                                    .OrderBy(s => s)
-                                                                    .ToList() ?? new List<string>();
-
-    public string SelectedServer {
-        get => _selectedServer ??= Servers.First();
+    public List<string> ServerNames => Servers?.Select(s => s.Name)
+                                               .ToList() ?? new List<string>();
+    public string SelectedServerName {
+        get => _selectedServerName ??= ServerNames.First();
         set {
-            _selectedServer = value;
+            _selectedServerName = value;
+            OnPropertyChanged(nameof(SelectedServer));
             OnPropertyChanged(nameof(Mods));
         }
     }
-
-    public List<string> Mods => ApplicationContext.Context.Items?.Where(c => c.ServerName == SelectedServer)
-                                                                 .Select(c => c.Mod)
-                                                                 .Distinct()
-                                                                 .ToList() ?? new List<string>();
+    public List<string> Mods => SelectedServer?.Items.Select(s => s.Mod)
+                                                     .Distinct()
+                                                     .ToList() ?? new List<string>();
 }
