@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace EconomyViewer.ViewModel;
+namespace EconomyViewer.DAL.ViewModel;
 
 public class ViewModelBase : INotifyPropertyChanged
 {

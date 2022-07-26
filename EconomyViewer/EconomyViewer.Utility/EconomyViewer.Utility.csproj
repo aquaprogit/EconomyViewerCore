@@ -1,16 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EconomyViewer.Converter\EconomyViewer.Converter.csproj" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EconomyViewer.DAL\EconomyViewer.DAL.csproj" />
-    <ProjectReference Include="..\EconomyViewer.Utility\EconomyViewer.Utility.csproj" />
   </ItemGroup>
 
 </Project>

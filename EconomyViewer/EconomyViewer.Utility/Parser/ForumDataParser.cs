@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using EconomyViewer.Model;
+using EconomyViewer.DAL.Entities;
 
 using HtmlAgilityPack;
 
-namespace EconomyViewer.Utils;
+namespace EconomyViewer.Utility.Parser;
 
-internal static class ForumDataParser
+public static class ForumDataParser
 {
     private static Dictionary<string, string>? _serverToLink;
     public static Dictionary<string, string> GetServerNamesToLinks()

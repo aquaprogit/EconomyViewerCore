@@ -4,11 +4,11 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Documents;
 
-using EconomyViewer.Model;
+using EconomyViewer.DAL.Entities;
 
 namespace EconomyViewer.Converter;
 
-internal class ListToDocumentConverter : IValueConverter
+public class ListToDocumentConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

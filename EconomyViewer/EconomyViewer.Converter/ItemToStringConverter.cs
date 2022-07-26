@@ -2,10 +2,10 @@
 using System.Globalization;
 using System.Windows.Data;
 
-using EconomyViewer.Model;
+using EconomyViewer.DAL.Entities;
 
 namespace EconomyViewer.Converter;
-internal class ItemToStringConverter : IValueConverter
+public class ItemToStringConverter : IValueConverter
 {
     public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

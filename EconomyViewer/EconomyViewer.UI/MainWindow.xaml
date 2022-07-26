@@ -215,16 +215,16 @@
                                     <TextBlock Grid.Row="0"
                                                Text="Предмет:" />
                                     <control:FilteredComboBox x:Name="MainSelectItem_ComboBox"
-                                                              Grid.Row="1"
-                                                              HorizontalAlignment="Left"
-                                                              VerticalAlignment="Center"
-                                                              Width="300"
-                                                              IsTextSearchEnabled="False"
-                                                              ItemsPanel="{StaticResource ItemsTemplate}"
-                                                              ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              SelectedItem="{Binding SelectedItemHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                                                              IsEditable="True"
-                                                              IsTabStop="True" />
+                                                            Grid.Row="1"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            Width="300"
+                                                            IsTextSearchEnabled="False"
+                                                            ItemsPanel="{StaticResource ItemsTemplate}"
+                                                            ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            SelectedItem="{Binding SelectedItemHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEditable="True"
+                                                            IsTabStop="True" />
                                 </Grid>
                                 <Grid Grid.Row="2">
                                     <GroupBox Header="Фильтры"
@@ -540,17 +540,17 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="Предмет:" />
                                     <control:FilteredComboBox x:Name="EditSelectItem_ComboBox"
-                                                              Grid.Row="1"
-                                                              DataContext="{Binding ItemViewModel}"
-                                                              HorizontalAlignment="Left"
-                                                              VerticalAlignment="Center"
-                                                              Width="300"
-                                                              IsTextSearchEnabled="False"
-                                                              ItemsPanel="{StaticResource ItemsTemplate}"
-                                                              ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              SelectedItem="{Binding SelectedHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                                                              IsEditable="True"
-                                                              IsTabStop="True" />
+                                                            Grid.Row="1"
+                                                            DataContext="{Binding ItemViewModel}"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            Width="300"
+                                                            IsTextSearchEnabled="False"
+                                                            ItemsPanel="{StaticResource ItemsTemplate}"
+                                                            ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                            SelectedItem="{Binding SelectedHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                            IsEditable="True"
+                                                            IsTabStop="True" />
                                 </Grid>
                                 <Grid Grid.Row="2">
                                     <GroupBox Header="Выберите действие"

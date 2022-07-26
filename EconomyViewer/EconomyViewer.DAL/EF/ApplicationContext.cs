@@ -1,13 +1,13 @@
 ﻿using System;
 using System.IO;
 
-using EconomyViewer.Model;
+using EconomyViewer.DAL.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace EconomyViewer.DB;
+namespace EconomyViewer.DAL.EF;
 
-internal class ApplicationContext : DbContext
+public class ApplicationContext : DbContext
 {
     private static ApplicationContext? _instance;
     public DbSet<Server>? Servers { get; set; }

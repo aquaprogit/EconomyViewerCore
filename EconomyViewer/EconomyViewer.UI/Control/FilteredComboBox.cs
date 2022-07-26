@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace EconomyViewer;
+namespace EconomyViewer.Control;
 public class FilteredComboBox : ComboBox
 {
     public static readonly DependencyProperty MinimumSearchLengthProperty =
@@ -51,9 +51,7 @@ public class FilteredComboBox : ComboBox
     protected override void OnDropDownOpened(EventArgs e)
     {
         if (Text == "")
-        {
             RefreshFilter();
-        }
         base.OnDropDownOpened(e);
     }
     /// <summary>
@@ -69,9 +67,7 @@ public class FilteredComboBox : ComboBox
         if ((e.Key == Key.Up || e.Key == Key.Down) && SelectedIndex != -1)
             return;
         if (e.Key is Key.Tab or Key.Enter)
-        {
             ClearFilter();
-        }
         else
         {
             if (Text != _oldFilter)
@@ -109,9 +105,7 @@ public class FilteredComboBox : ComboBox
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         if (e.Key is Key.Tab or Key.Enter)
-        {
             IsDropDownOpen = false;
-        }
         else if (e.Key == Key.Escape)
         {
             IsDropDownOpen = false;

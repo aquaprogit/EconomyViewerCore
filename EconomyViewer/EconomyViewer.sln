@@ -3,14 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer", "EconomyViewer\EconomyViewer.csproj", "{9385E8F1-ABFC-40EA-A235-2F8AF82AF855}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BD4F13C1-778C-43E5-B7F2-7B4F159AAA11}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemTests", "ItemTests\ItemTests.csproj", "{2DBE8F19-F13A-4A98-99CD-A9006A49DC4F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{59B4B4A8-85FD-4B92-9283-0B9C7F582761}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer.Converter", "EconomyViewer.Converter\EconomyViewer.Converter.csproj", "{C2CABC90-B953-4EC3-A86B-807760FFF4BB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer.DAL", "EconomyViewer.DAL\EconomyViewer.DAL.csproj", "{06D1DC2F-3863-4BC2-9AA3-93478253480F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer.Utility", "EconomyViewer.Utility\EconomyViewer.Utility.csproj", "{B54A62C0-81D6-4B2D-BDF1-E01555284754}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer", "EconomyViewer\EconomyViewer.csproj", "{739C5C47-E92F-4434-9935-264ABA97DE32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,14 +24,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9385E8F1-ABFC-40EA-A235-2F8AF82AF855}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9385E8F1-ABFC-40EA-A235-2F8AF82AF855}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9385E8F1-ABFC-40EA-A235-2F8AF82AF855}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9385E8F1-ABFC-40EA-A235-2F8AF82AF855}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DBE8F19-F13A-4A98-99CD-A9006A49DC4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DBE8F19-F13A-4A98-99CD-A9006A49DC4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DBE8F19-F13A-4A98-99CD-A9006A49DC4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DBE8F19-F13A-4A98-99CD-A9006A49DC4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2CABC90-B953-4EC3-A86B-807760FFF4BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2CABC90-B953-4EC3-A86B-807760FFF4BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2CABC90-B953-4EC3-A86B-807760FFF4BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2CABC90-B953-4EC3-A86B-807760FFF4BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06D1DC2F-3863-4BC2-9AA3-93478253480F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06D1DC2F-3863-4BC2-9AA3-93478253480F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06D1DC2F-3863-4BC2-9AA3-93478253480F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06D1DC2F-3863-4BC2-9AA3-93478253480F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B54A62C0-81D6-4B2D-BDF1-E01555284754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54A62C0-81D6-4B2D-BDF1-E01555284754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54A62C0-81D6-4B2D-BDF1-E01555284754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54A62C0-81D6-4B2D-BDF1-E01555284754}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739C5C47-E92F-4434-9935-264ABA97DE32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739C5C47-E92F-4434-9935-264ABA97DE32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739C5C47-E92F-4434-9935-264ABA97DE32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739C5C47-E92F-4434-9935-264ABA97DE32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

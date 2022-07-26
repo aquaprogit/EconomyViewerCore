@@ -15,7 +15,14 @@ namespace EconomyViewer;
 /// </summary>
 public partial class App : Application
 {
-    public App() { }
+    public static event Action<string> ServerChanged;
+
+    public App()
+    {
+        ServerChanged += (server) => {
+            Debug.WriteLine("Selected server: " + server);
+        };
+    }
 
     public static async void FillContextAsync()
     {

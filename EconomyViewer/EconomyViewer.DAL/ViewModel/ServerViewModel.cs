@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using EconomyViewer.DB;
-using EconomyViewer.Model;
+using EconomyViewer.DAL.EF;
+using EconomyViewer.DAL.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace EconomyViewer.ViewModel;
+namespace EconomyViewer.DAL.ViewModel;
 
 public class ServerViewModel : ViewModelBase
 {
