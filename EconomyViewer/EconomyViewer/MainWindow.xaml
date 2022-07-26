@@ -23,8 +23,8 @@
         <converters:ItemToStringConverter x:Key="itemToStringConverter" />
         <converters:CountToBoolConverter x:Key="countToBoolConverter" />
         <converters:ListToDocumentConverter x:Key="listToDocumentConverter" />
-        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
         <converters:StringsToCheckBoxesConverter x:Key="stringsToCheckBoxesConverter" />
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
         <Style TargetType="Image">
             <Setter Property="RenderOptions.BitmapScalingMode"
                     Value="HighQuality" />
