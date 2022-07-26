@@ -1,8 +1,13 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
+using EconomyViewer.DAL.EF;
 using EconomyViewer.DAL.ViewModel;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace EconomyViewer;
 /// <summary>

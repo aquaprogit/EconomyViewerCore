@@ -40,4 +40,14 @@ public class ServerViewModel : ViewModelBase
                                                      .Distinct()
                                                      .ToList() ?? new List<string>();
     public string? ItemStringFormat => SelectedItem?.StringFormat;
+
+    public ServerViewModel()
+    {
+        ApplicationContext.Context.SavedChanges += Context_SavedChanges;
+    }
+
+    private void Context_SavedChanges(object? sender, SavedChangesEventArgs e)
+    {
+        OnPropertyChanged(nameof(ServerNames));
+    }
 }
