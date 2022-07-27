@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer.Utility", "Ec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer", "EconomyViewer\EconomyViewer.csproj", "{739C5C47-E92F-4434-9935-264ABA97DE32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemTests", "ItemTests\ItemTests.csproj", "{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,9 +42,16 @@ Global
 		{739C5C47-E92F-4434-9935-264ABA97DE32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{739C5C47-E92F-4434-9935-264ABA97DE32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{739C5C47-E92F-4434-9935-264ABA97DE32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71} = {59B4B4A8-85FD-4B92-9283-0B9C7F582761}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D20652D-9885-4C08-8781-4FCBA64EBCC8}
