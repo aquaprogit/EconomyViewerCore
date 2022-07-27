@@ -20,7 +20,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBox FontSize="24"
-                     Text="{Binding Value, Mode=TwoWay}"/>
+                     Text="{Binding Value, Mode=TwoWay}" />
             <Grid Grid.Column="1">
                 <Grid.Resources>
                     <Style TargetType="Button">
@@ -36,10 +36,12 @@
                 </Grid.RowDefinitions>
                 <Button x:Name="UpButton"
                         Content="^"
+                        IsEnabled="{Binding IsIncreasable}"
                         Click="UpButton_Click">
                 </Button>
                 <Button x:Name="DownButton"
                         Grid.Row="1"
+                        IsEnabled="{Binding IsDecreasable}"
                         Content="^"
                         RenderTransformOrigin="0.5,0.5"
                         Click="DownButton_Click">

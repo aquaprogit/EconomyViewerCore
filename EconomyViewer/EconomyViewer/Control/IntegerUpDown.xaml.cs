@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace EconomyViewer.Control
     /// <summary>
     /// Interaction logic for IntegerUpDown.xaml
     /// </summary>
-    public partial class IntegerUpDown : UserControl
+    public partial class IntegerUpDown : UserControl, INotifyPropertyChanged
     {
         public IntegerUpDown()
         {
@@ -32,6 +33,8 @@ namespace EconomyViewer.Control
                 if (value >= MinValue && value <= MaxValue)
                 {
                     SetValue(ValueProperty, value);
+                    OnPropertyChanged(nameof(IsIncreasable));
+                    OnPropertyChanged(nameof(IsDecreasable));
                     Debug.WriteLine(Value.ToString());
                 }
 
@@ -55,12 +58,21 @@ namespace EconomyViewer.Control
                     throw new ArgumentOutOfRangeException("MinValue can not be less than MinValue");
             }
         }
+        public bool IsIncreasable => Value < MaxValue;
+        public bool IsDecreasable => Value > MinValue;
+
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(IntegerUpDown), new PropertyMetadata(5));
+            DependencyProperty.Register("Value", typeof(int), typeof(IntegerUpDown), new PropertyMetadata(0));
         public static readonly DependencyProperty MaxValueProperty =
             DependencyProperty.Register("MaxValue", typeof(int), typeof(IntegerUpDown), new PropertyMetadata(int.MaxValue));
         public static readonly DependencyProperty MinValueProperty =
             DependencyProperty.Register("MinValue", typeof(int), typeof(IntegerUpDown), new PropertyMetadata(int.MinValue));
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged(string propName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
 
         private void UpButton_Click(object sender, RoutedEventArgs e)
         {
