@@ -14,7 +14,8 @@
         ResizeMode="CanMinimize"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
-        FontSize="24">
+        FontSize="24"
+        MouseDown="Window_MouseDown">
     <Window.Resources>
         <ItemsPanelTemplate x:Key="ItemsTemplate">
             <VirtualizingStackPanel />
@@ -45,8 +46,7 @@
                     Value="25,0,0,0" />
         </Style>
         <!--// Tooltip Style Template //-->
-        <Style TargetType="ToolTip"
-               x:Key="ToolTipStyle">
+        <Style TargetType="ToolTip">
             <Setter Property="Placement"
                     Value="Right" />
             <Setter Property="Height"
@@ -81,9 +81,9 @@
             <Setter Property="VerticalAlignment"
                     Value="Top" />
             <Setter Property="Width"
-                    Value="45" />
+                    Value="50" />
             <Setter Property="Height"
-                    Value="45" />
+                    Value="50" />
             <Setter Property="BorderThickness"
                     Value="0" />
             <Setter Property="Template">
@@ -123,18 +123,12 @@
                     <RowDefinition />
                     <RowDefinition Height="9*" />
                 </Grid.RowDefinitions>
-                <!--Header-->
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
-                        <ColumnDefinition Width="45" />
-                        <ColumnDefinition Width="45" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="50" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="Grid_Header"
-                               Text=""
-                               FontSize="34"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center" />
                     <Button x:Name="MinimizeWindow_Button"
                             Grid.Column="1"
                             Style="{StaticResource WindowButtonStyle}"
@@ -157,7 +151,6 @@
                 <Grid Grid.Row="1"
                       DataContext="{Binding ServerViewModel}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="45" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="25" />
                     </Grid.RowDefinitions>
@@ -166,7 +159,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="40" />
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Row="1"
+                    <Grid Grid.Row="0"
                           Grid.Column="1">
                         <Grid.Resources>
                             <Style TargetType="TextBlock">
@@ -177,502 +170,192 @@
                             </Style>
                         </Grid.Resources>
                         <Grid x:Name="Main_Grid"
-                              Visibility="Visible">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="55" />
-                                <ColumnDefinition Width="3*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="0"
-                                  Background="Transparent">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="2*" />
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0"
-                                               Text="Сервер:" />
-                                    <ComboBox Grid.Row="1"
-                                              ItemsSource="{Binding ServerNames}"
-                                              SelectedItem="{Binding SelectedServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              HorizontalAlignment="Left"
-                                              Height="Auto"
-                                              VerticalAlignment="Center"
-                                              Width="250"
-                                              SelectionChanged="ComboBox_SelectionChanged" />
-                                </Grid>
-                                <Grid Grid.Row="1"
-                                      IsEnabled="{Binding ElementName=MainSelectServer_ComboBox, Path=SelectedIndex, Converter={StaticResource intToBoolConverter}}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0"
-                                               Text="Предмет:" />
-                                    <control:FilteredComboBox x:Name="MainSelectItem_ComboBox"
-                                                              Grid.Row="1"
-                                                              HorizontalAlignment="Left"
-                                                              VerticalAlignment="Center"
-                                                              DataContext="{Binding ItemViewModel}"
-                                                              Width="300"
-                                                              IsTextSearchEnabled="False"
-                                                              ItemsPanel="{StaticResource ItemsTemplate}"
-                                                              ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              SelectedItem="{Binding SelectedHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                                                              IsEditable="True"
-                                                              IsTabStop="True" />
-                                </Grid>
-                                <Grid Grid.Row="2">
-                                    <GroupBox Header="Фильтры"
-                                              FontSize="20">
-                                        <Grid>
-                                            <Grid.Resources>
-                                                <Style TargetType="{x:Type CheckBox}">
-                                                    <Setter Property="VerticalContentAlignment"
-                                                            Value="Center" />
-                                                    <Setter Property="HorizontalAlignment"
-                                                            Value="Stretch" />
-                                                    <EventSetter Event="Click"
-                                                                 Handler="CheckBox_Click" />
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="{x:Type CheckBox}">
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <Image x:Name="checkboxImage"
-                                                                           Source="Assets/unchecked.png"
-                                                                           Width="25"
-                                                                           Margin="0,0,5,0"
-                                                                           RenderOptions.BitmapScalingMode="HighQuality" />
-                                                                    <ContentPresenter />
-                                                                </StackPanel>
-                                                                <ControlTemplate.Triggers>
-                                                                    <Trigger Property="IsChecked"
-                                                                             Value="True">
-                                                                        <Setter TargetName="checkboxImage"
-                                                                                Property="Source"
-                                                                                Value="Assets/checked.png" />
-                                                                    </Trigger>
-                                                                    <Trigger Property="IsChecked"
-                                                                             Value="False">
-                                                                        <Setter TargetName="checkboxImage"
-                                                                                Property="Source"
-                                                                                Value="Assets/unchecked.png" />
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </Grid.Resources>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition Height="45" />
-                                            </Grid.RowDefinitions>
-                                            <ListView x:Name="MainFilterList_ListView"
-                                                      BorderBrush="{x:Null}"
-                                                      BorderThickness="0"
-                                                      ItemsSource="{Binding Mods}"
-                                                      HorizontalContentAlignment="Stretch"
-                                                      Background="{x:Null}">
-                                                <ListView.ItemContainerStyle>
-                                                    <Style TargetType="ListViewItem">
-                                                        <Setter Property="Focusable"
-                                                                Value="False" />
-                                                        <Setter Property="Background"
-                                                                Value="Transparent" />
-                                                        <Setter Property="Margin"
-                                                                Value="0,5,0,0" />
-                                                        <Setter Property="Template">
-                                                            <Setter.Value>
-                                                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                                                    <ContentPresenter />
-                                                                </ControlTemplate>
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </ListView.ItemContainerStyle>
-                                            </ListView>
-                                            <CheckBox x:Name="MainCheckAllFilter_CheckBox"
-                                                      Grid.Row="1"
-                                                      IsEnabled="{Binding ItemViewModel.Headers.Count, Mode=OneWay, Converter={StaticResource countToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
-                                                      Click="MainCheckAllFilter_CheckBox_Click">
-                                                <Label Content="Выбрать всё"
-                                                       VerticalContentAlignment="Center" />
-                                            </CheckBox>
-                                        </Grid>
-                                    </GroupBox>
-                                </Grid>
-                            </Grid>
-                            <Grid Grid.Column="2"
-                                  DataContext="{Binding ItemViewModel}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="2*" />
-                                    <RowDefinition Height="5*" />
-                                    <RowDefinition Height="4*" />
-                                </Grid.RowDefinitions>
-                                <Border Grid.Row="0"
-                                        IsEnabled="True"
-                                        BorderBrush="LightGray"
-                                        BorderThickness="1">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="7*" />
-                                            <ColumnDefinition Width="1*" />
-                                        </Grid.ColumnDefinitions>
-                                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                                      VerticalScrollBarVisibility="Hidden">
-                                            <TextBox x:Name="MainToCopyValue_TextBox"
-                                                     IsReadOnly="True"
-                                                     MinWidth="300"
-                                                     HorizontalAlignment="Left"
-                                                     VerticalAlignment="Center"
-                                                     FontSize="26"
-                                                     BorderBrush="Transparent"
-                                                     Grid.Column="0"
-                                                     TextWrapping="Wrap"
-                                                     Focusable="True"
-                                                     Text="{Binding StringFormat, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        </ScrollViewer>
-                                        <Button x:Name="MainCopyValue_Button"
-                                                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                                Grid.Column="1"
-                                                Height="50"
-                                                Click="MainCopyValue_Button_Click">
-                                            <Button.ToolTip>
-                                                <ToolTip Style="{StaticResource ToolTipStyle}"
-                                                         Content="Скопировать"
-                                                         Placement="Left"
-                                                         HorizontalOffset="-75" />
-                                            </Button.ToolTip>
-                                            <Image Source="Assets/copy.png" />
-                                        </Button>
-                                    </Grid>
-                                </Border>
-                                <Grid Grid.Row="1"
-                                      IsEnabled="{Binding ElementName=MainSelectItem_ComboBox, Path=SelectedIndex, Converter={StaticResource intToBoolConverter}}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="4*" />
-                                            <ColumnDefinition Width="10*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Название:" />
-                                        <ScrollViewer VerticalScrollBarVisibility="Disabled"
-                                                      HorizontalScrollBarVisibility="Auto"
-                                                      Grid.Column="1">
-                                            <TextBlock Text="{Binding SelectedHeader, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        </ScrollViewer>
-                                    </Grid>
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="167*" />
-                                            <ColumnDefinition Width="340*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Количество:" />
-                                        <control:IntegerUpDown Grid.Column="1"
-                                                               HorizontalAlignment="Left"
-                                                               MinValue="0"
-                                                               Value="{Binding Count, Mode=TwoWay}" />
-                                    </Grid>
-                                    <Grid Grid.Row="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="69*" />
-                                            <ColumnDefinition Width="95*" />
-                                            <ColumnDefinition Width="310*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Цена:" />
-                                        <TextBlock Text="{Binding Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}, ConverterCulture=de-DE}"
-                                                   Grid.Column="1" />
-                                    </Grid>
-                                    <Grid Grid.Row="3">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="59*" />
-                                            <ColumnDefinition Width="295*" />
-                                            <ColumnDefinition Width="60*" />
-                                            <ColumnDefinition Width="60*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Мод:"
-                                                   Height="32"
-                                                   Margin="0,11"
-                                                   Width="54" />
-                                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                                      Grid.Column="1"
-                                                      VerticalScrollBarVisibility="Hidden">
-                                            <TextBlock Text="{Binding Mod, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        </ScrollViewer>
-                                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                                Grid.Column="2"
-                                                x:Name="MainAddToSumUp_Button"
-                                                Click="MainAddToSumUp_Button_Click"
-                                                Width="50"
-                                                Height="50">
-                                            <Button.ToolTip>
-                                                <ToolTip Style="{StaticResource ToolTipStyle}"
-                                                         HorizontalOffset="-75"
-                                                         Placement="Left"
-                                                         Content="Добавить к сумме" />
-                                            </Button.ToolTip>
-                                            <Image Source="Assets/add.png"
-                                                   Width="45" />
-                                        </Button>
-                                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                                Grid.Column="3"
-                                                x:Name="MainRemoveFromSumUp_Button"
-                                                Click="MainRemoveFromSumUp_Button_Click"
-                                                Width="50"
-                                                Height="50">
-                                            <Button.ToolTip>
-                                                <ToolTip Style="{StaticResource ToolTipStyle}"
-                                                         HorizontalOffset="-75"
-                                                         Placement="Left"
-                                                         Content="Удалить последний"
-                                                         Width="Auto" />
-                                            </Button.ToolTip>
-                                            <Image Source="Assets/remove.png"
-                                                   Width="45" />
-                                        </Button>
-                                    </Grid>
-                                </Grid>
-                                <Grid Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="10" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="10" />
-                                        <RowDefinition />
-                                        <RowDefinition Height="50" />
-                                    </Grid.RowDefinitions>
-                                    <RichTextBox x:Name="MainToSumUpContainer_RichTextBox"
-                                                 Grid.Column="1"
-                                                 IsReadOnly="True"
-                                                 HorizontalScrollBarVisibility="Auto"
-                                                 VerticalScrollBarVisibility="Auto"
-                                                 Grid.Row="1"
-                                                 FontSize="20">
-                                        <RichTextBox.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin"
-                                                        Value="0" />
-                                            </Style>
-                                        </RichTextBox.Resources>
-                                    </RichTextBox>
-                                    <Grid Grid.Row="2"
-                                          Grid.Column="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto"
-                                                              MinWidth="25" />
-                                            <ColumnDefinition Width="*"
-                                                              MinWidth="50" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock x:Name="MainToSumUpResult_TextBlock"
-                                                   Text="Итоговая сумма:"
-                                                   FontSize="20" />
-                                        <TextBlock x:Name="MainToSumupResult_Int"
-                                                   Grid.Column="1"
-                                                   Margin="5,0,0,0"
-                                                   FontSize="20"
-                                                   Text="{Binding ToSumUpResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
-                                                Grid.Column="2"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                x:Name="MainClearToSumUp_Button"
-                                                Click="MainClearToSumUp_Button_Click"
-                                                Margin="5,2"
-                                                Width="50">
-                                            <Button.ToolTip>
-                                                <ToolTip Style="{StaticResource ToolTipStyle}"
-                                                         HorizontalOffset="-75"
-                                                         Placement="Left"
-                                                         Content="Очистить" />
-                                            </Button.ToolTip>
-                                            <Image Source="Assets/trash.png"
-                                                   Width="45" />
-                                        </Button>
-
-
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                        <Grid x:Name="Exchange_Grid"
+                              Grid.Row="1"
                               Visibility="Hidden">
-                        </Grid>
-                        <Grid x:Name="Edit_Grid"
-                              Visibility="Hidden">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="63*" />
-                                <ColumnDefinition Width="55" />
-                                <ColumnDefinition Width="95*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="2*" />
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="45" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Главная"
+                                       FontSize="34"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Top" />
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="55" />
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0"
+                                      Background="Transparent">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="Сервер:" />
-                                    <ComboBox Grid.Row="1"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              Width="250"
-                                              VerticalContentAlignment="Center"
-                                              ItemsSource="{Binding ServerNames}"
-                                              SelectedItem="{Binding SelectedServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
-                                <Grid Grid.Row="1">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="Предмет:" />
-                                    <control:FilteredComboBox x:Name="EditSelectItem_ComboBox"
-                                                              Grid.Row="1"
-                                                              DataContext="{Binding ItemViewModel}"
-                                                              HorizontalAlignment="Left"
-                                                              VerticalAlignment="Center"
-                                                              Width="300"
-                                                              IsTextSearchEnabled="False"
-                                                              ItemsPanel="{StaticResource ItemsTemplate}"
-                                                              ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              SelectedItem="{Binding SelectedHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                                                              IsEditable="True"
-                                                              IsTabStop="True" />
-                                </Grid>
-                                <Grid Grid.Row="2">
-                                    <GroupBox Header="Выберите действие"
-                                              FontSize="22"
-                                              IsEnabled="True"
-                                              VerticalAlignment="Top">
-                                        <StackPanel x:Name="SelectAction_StackPanel">
-                                            <StackPanel.Resources>
-                                                <Style TargetType="RadioButton">
-                                                    <Setter Property="Margin"
-                                                            Value="0,5" />
-                                                    <Setter Property="VerticalContentAlignment"
-                                                            Value="Center" />
-                                                    <Setter Property="HorizontalAlignment"
-                                                            Value="Left" />
-                                                </Style>
-                                            </StackPanel.Resources>
-                                            <RadioButton Content="Редактировать"
-                                                         Tag="Edit"
-                                                         IsChecked="True"
-                                                         x:Name="Edit_RadioButton" />
-                                            <RadioButton Content="Удалить"
-                                                         Tag="Delete"
-                                                         IsChecked="{Binding IsEditMod, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                                                         x:Name="Delete_RadioButton" />
-                                        </StackPanel>
-                                    </GroupBox>
-                                </Grid>
-                            </Grid>
-                            <Grid Grid.Column="2"
-                                  IsEnabled="{Binding ElementName=SelectItemToEdit_ComboBox, Path=SelectedIndex, Converter={StaticResource intToBoolConverter}}">
-                                <Grid x:Name="SelectEdit_Grid"
-                                      Visibility="{Binding ElementName=Edit_RadioButton, Path=IsChecked, Converter={StaticResource boolToVisibilityConverter}, Mode=TwoWay}">
-                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="1*" />
                                         <RowDefinition Height="2*" />
-                                        <RowDefinition Height="1*" />
-                                        <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <Grid Grid.Row="0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0"
+                                                   Text="Сервер:" />
+                                        <ComboBox Grid.Row="1"
+                                                  ItemsSource="{Binding ServerNames}"
+                                                  SelectedItem="{Binding SelectedServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Left"
+                                                  Height="Auto"
+                                                  VerticalAlignment="Center"
+                                                  Width="250"
+                                                  SelectionChanged="ComboBox_SelectionChanged" />
+                                    </Grid>
+                                    <Grid Grid.Row="1"
+                                          IsEnabled="{Binding ElementName=MainSelectServer_ComboBox, Path=SelectedIndex, Converter={StaticResource intToBoolConverter}}">
+                                        <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <Grid Grid.Row="0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="4*" />
-                                                <ColumnDefinition Width="10*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Название:" />
-                                            <TextBox x:Name="ItemToEditName_TextBox"
-                                                     Grid.Column="1"
-                                                     DataContext="{Binding ItemViewModel}"
-                                                     Width="Auto"
-                                                     MinWidth="250"
-                                                     MaxWidth="320"
-                                                     HorizontalScrollBarVisibility="Auto"
-                                                     VerticalAlignment="Center"
-                                                     Text="{Binding SelectedItem.Header, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     HorizontalAlignment="Left" />
-
-                                        </Grid>
-                                        <Grid Grid.Row="1">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16*" />
-                                                <ColumnDefinition Width="34*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Количество:" />
-                                            <!--TODO IntegerUpDown-->
-
-                                        </Grid>
-                                        <Grid Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="8*" />
-                                                <ColumnDefinition Width="45*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Цена:" />
-                                            <!--TODO IntegerUpDown-->
-                                        </Grid>
-                                        <Grid Grid.Row="3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*" />
-                                                <ColumnDefinition Width="5*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Мод:" />
-                                            <ComboBox x:Name="ItemToEditMod_ComboBox"
-                                                      Grid.Column="1"
-                                                      IsEditable="True"
-                                                      IsTextSearchEnabled="False"
-                                                      HorizontalAlignment="Left"
-                                                      VerticalAlignment="Center"
-                                                      Width="250"
-                                                      ItemsSource="{Binding ServerViewModel.Mods, Mode=OneWay, UpdateSourceTrigger=LostFocus}"
-                                                      Text="{Binding ItemViewModel.SelectedItem.Mod, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        </Grid>
+                                        <TextBlock Grid.Row="0"
+                                                   Text="Предмет:" />
+                                        <control:FilteredComboBox x:Name="MainSelectItem_ComboBox"
+                                                                  Grid.Row="1"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Center"
+                                                                  DataContext="{Binding ItemViewModel}"
+                                                                  Width="300"
+                                                                  IsTextSearchEnabled="False"
+                                                                  ItemsPanel="{StaticResource ItemsTemplate}"
+                                                                  ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  SelectedItem="{Binding SelectedHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                                  IsEditable="True"
+                                                                  IsTabStop="True" />
                                     </Grid>
                                     <Grid Grid.Row="2">
-                                        <Button x:Name="Edit_Button"
-                                                HorizontalAlignment="Center"
-                                                Content="Редактировать"
-                                                VerticalAlignment="Center"
-                                                Width="Auto"
-                                                Padding="15,10"
-                                                MinWidth="200"
-                                                Click="Edit_Button_Click" />
+                                        <GroupBox Header="Фильтры"
+                                                  FontSize="20">
+                                            <Grid>
+                                                <Grid.Resources>
+                                                    <Style TargetType="{x:Type CheckBox}">
+                                                        <Setter Property="VerticalContentAlignment"
+                                                                Value="Center" />
+                                                        <Setter Property="HorizontalAlignment"
+                                                                Value="Stretch" />
+                                                        <EventSetter Event="Click"
+                                                                     Handler="CheckBox_Click" />
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type CheckBox}">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Image x:Name="checkboxImage"
+                                                                               Source="Assets/unchecked.png"
+                                                                               Width="25"
+                                                                               Margin="0,0,5,0"
+                                                                               RenderOptions.BitmapScalingMode="HighQuality" />
+                                                                        <ContentPresenter />
+                                                                    </StackPanel>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsChecked"
+                                                                                 Value="True">
+                                                                            <Setter TargetName="checkboxImage"
+                                                                                    Property="Source"
+                                                                                    Value="Assets/checked.png" />
+                                                                        </Trigger>
+                                                                        <Trigger Property="IsChecked"
+                                                                                 Value="False">
+                                                                            <Setter TargetName="checkboxImage"
+                                                                                    Property="Source"
+                                                                                    Value="Assets/unchecked.png" />
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Grid.Resources>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition Height="45" />
+                                                </Grid.RowDefinitions>
+                                                <ListView x:Name="MainFilterList_ListView"
+                                                          BorderBrush="{x:Null}"
+                                                          BorderThickness="0"
+                                                          ItemsSource="{Binding Mods, Converter={StaticResource stringsToCheckBoxesConverter}}"
+                                                          HorizontalContentAlignment="Stretch">
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="Focusable"
+                                                                    Value="False" />
+                                                            <Setter Property="Background"
+                                                                    Value="Transparent" />
+                                                            <Setter Property="Margin"
+                                                                    Value="0,5,0,0" />
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                                        <ContentPresenter />
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                </ListView>
+                                                <CheckBox x:Name="MainCheckAllFilter_CheckBox"
+                                                          Grid.Row="1"
+                                                          IsEnabled="{Binding ItemViewModel.Headers.Count, Mode=OneWay, Converter={StaticResource countToBoolConverter}, UpdateSourceTrigger=PropertyChanged}"
+                                                          Click="MainCheckAllFilter_CheckBox_Click">
+                                                    <Label Content="Выбрать всё"
+                                                           VerticalContentAlignment="Center" />
+                                                </CheckBox>
+                                            </Grid>
+                                        </GroupBox>
                                     </Grid>
                                 </Grid>
-                                <Grid x:Name="SelectDelete_Grid"
-                                      Visibility="{Binding ElementName=Delete_RadioButton, Path=IsChecked, Converter={StaticResource boolToVisibilityConverter}, Mode=TwoWay}">
+                                <Grid Grid.Column="2"
+                                      DataContext="{Binding ItemViewModel}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="2*" />
-                                        <RowDefinition Height="1*" />
-                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="5*" />
+                                        <RowDefinition Height="4*" />
                                     </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0"
-                                          DataContext="{Binding ItemViewModel.SelectedItem}">
+                                    <Border Grid.Row="0"
+                                            IsEnabled="True"
+                                            BorderBrush="LightGray"
+                                            BorderThickness="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="7*" />
+                                                <ColumnDefinition Width="1*" />
+                                            </Grid.ColumnDefinitions>
+                                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                                          VerticalScrollBarVisibility="Hidden">
+                                                <TextBox x:Name="MainToCopyValue_TextBox"
+                                                         IsReadOnly="True"
+                                                         MinWidth="300"
+                                                         HorizontalAlignment="Left"
+                                                         VerticalAlignment="Center"
+                                                         FontSize="26"
+                                                         BorderBrush="Transparent"
+                                                         Grid.Column="0"
+                                                         TextWrapping="Wrap"
+                                                         Focusable="True"
+                                                         Text="{Binding StringFormat, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </ScrollViewer>
+                                            <Button x:Name="MainCopyValue_Button"
+                                                    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                                    Grid.Column="1"
+                                                    Height="50"
+                                                    Click="MainCopyValue_Button_Click">
+                                                <Button.ToolTip>
+                                                    <ToolTip Content="Скопировать"
+                                                             Placement="Left"
+                                                             HorizontalOffset="-75" />
+                                                </Button.ToolTip>
+                                                <Image Source="Assets/copy.png" />
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                    <Grid Grid.Row="1"
+                                          IsEnabled="{Binding ElementName=MainSelectItem_ComboBox, Path=SelectedIndex, Converter={StaticResource intToBoolConverter}}">
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition />
@@ -688,55 +371,390 @@
                                             <ScrollViewer VerticalScrollBarVisibility="Disabled"
                                                           HorizontalScrollBarVisibility="Auto"
                                                           Grid.Column="1">
-                                                <TextBlock x:Name="ToDeleteItemName_TextBlock"
-                                                           Text="{Binding Header, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                                <TextBlock Text="{Binding SelectedHeader, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </ScrollViewer>
                                         </Grid>
                                         <Grid Grid.Row="1">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16*" />
-                                                <ColumnDefinition Width="34*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Количество:" />
-                                            <TextBlock x:Name="ToDeleteItemCount_TextBlock"
-                                                       Grid.Column="1"
-                                                       Text="{Binding Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                            <Border Margin="15,0,0,0"
+                                                    BorderBrush="Black"
+                                                    BorderThickness="0.3,0.3,0.5,0.3"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Grid.Column="1">
+                                                <control:IntegerUpDown Value="{Binding Count, Mode=TwoWay}"
+                                                                       MinValue="1"
+                                                                       BorderBrush="Black" />
+                                            </Border>
                                         </Grid>
                                         <Grid Grid.Row="2">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="87*" />
-                                                <ColumnDefinition Width="410*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Цена:" />
-                                            <TextBlock x:Name="ToDeleteItemPrice_TextBlock"
-                                                       Grid.Column="1"
-                                                       Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                            <TextBlock Text="{Binding Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}, ConverterCulture=de-DE}"
+                                                       Grid.Column="1" />
                                         </Grid>
                                         <Grid Grid.Row="3">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*" />
-                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="295*" />
+                                                <ColumnDefinition Width="60*" />
+                                                <ColumnDefinition Width="60*" />
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Мод:" />
-                                            <TextBlock x:Name="ToDeleteItemMod_TextBlock"
-                                                       Grid.Column="1"
-                                                       Text="{Binding Mod, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                            <Grid.Resources>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Width"
+                                                            Value="50" />
+                                                    <Setter Property="Height"
+                                                            Value="50" />
+                                                </Style>
+                                            </Grid.Resources>
+                                            <TextBlock Text="Мод:"
+                                                       Height="32"
+                                                       Margin="0,11"
+                                                       Width="54" />
+                                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                                          Grid.Column="1"
+                                                          VerticalScrollBarVisibility="Hidden">
+                                                <TextBlock Text="{Binding Mod, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </ScrollViewer>
+                                            <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                                    Grid.Column="2"
+                                                    x:Name="MainAddToSumUp_Button"
+                                                    Click="MainAddToSumUp_Button_Click">
+                                                <Button.ToolTip>
+                                                    <ToolTip HorizontalOffset="-75"
+                                                             Placement="Left"
+                                                             Content="Добавить к сумме" />
+                                                </Button.ToolTip>
+                                                <Image Source="Assets/add.png"
+                                                       Width="45" />
+                                            </Button>
+                                            <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                                    Grid.Column="3"
+                                                    x:Name="MainRemoveFromSumUp_Button"
+                                                    Click="MainRemoveFromSumUp_Button_Click">
+                                                <Button.ToolTip>
+                                                    <ToolTip HorizontalOffset="-75"
+                                                             Placement="Left"
+                                                             Content="Удалить последний"
+                                                             Width="Auto" />
+                                                </Button.ToolTip>
+                                                <Image Source="Assets/remove.png"
+                                                       Width="45" />
+                                            </Button>
                                         </Grid>
                                     </Grid>
                                     <Grid Grid.Row="2">
-                                        <Button x:Name="Delete_Button"
-                                                Grid.Column="0"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Width="200"
-                                                Content="Удалить"
-                                                Padding="20,10"
-                                                Click="Delete_Button_Click" />
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="10" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="10" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="10" />
+                                            <RowDefinition />
+                                            <RowDefinition Height="50" />
+                                        </Grid.RowDefinitions>
+                                        <RichTextBox x:Name="MainToSumUpContainer_RichTextBox"
+                                                     Grid.Column="1"
+                                                     IsReadOnly="True"
+                                                     HorizontalScrollBarVisibility="Auto"
+                                                     VerticalScrollBarVisibility="Auto"
+                                                     Grid.Row="1"
+                                                     FontSize="20">
+                                            <RichTextBox.Resources>
+                                                <Style TargetType="{x:Type Paragraph}">
+                                                    <Setter Property="Margin"
+                                                            Value="0" />
+                                                </Style>
+                                            </RichTextBox.Resources>
+                                        </RichTextBox>
+                                        <Grid Grid.Row="2"
+                                              Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto"
+                                                                  MinWidth="25" />
+                                                <ColumnDefinition Width="*"
+                                                                  MinWidth="50" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock x:Name="MainToSumUpResult_TextBlock"
+                                                       Text="Итоговая сумма:"
+                                                       FontSize="20" />
+                                            <TextBlock x:Name="MainToSumupResult_Int"
+                                                       Grid.Column="1"
+                                                       Margin="5,0,0,0"
+                                                       FontSize="20"
+                                                       Text="{Binding ToSumUpResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center"
+                                                    x:Name="MainClearToSumUp_Button"
+                                                    Click="MainClearToSumUp_Button_Click"
+                                                    Margin="5,2"
+                                                    Width="50">
+                                                <Button.ToolTip>
+                                                    <ToolTip HorizontalOffset="-75"
+                                                             Placement="Left"
+                                                             Content="Очистить" />
+                                                </Button.ToolTip>
+                                                <Image Source="Assets/trash.png"
+                                                       Width="45" />
+                                            </Button>
+
+
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+
+                            </Grid>
+                        </Grid>
+                        <Grid x:Name="Edit_Grid"
+                              Visibility="Visible">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="45" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Редактировать"
+                                       FontSize="34"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center" />
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="63*" />
+                                    <ColumnDefinition Width="55" />
+                                    <ColumnDefinition Width="95*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="2*" />
+                                    </Grid.RowDefinitions>
+                                    <Grid Grid.Row="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="Сервер:" />
+                                        <ComboBox Grid.Row="1"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Width="250"
+                                                  VerticalContentAlignment="Center"
+                                                  ItemsSource="{Binding ServerNames}"
+                                                  SelectedItem="{Binding SelectedServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
+                                    <Grid Grid.Row="1">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="Предмет:" />
+                                        <control:FilteredComboBox x:Name="EditSelectItem_ComboBox"
+                                                                  Grid.Row="1"
+                                                                  DataContext="{Binding ItemViewModel}"
+                                                                  HorizontalAlignment="Left"
+                                                                  VerticalAlignment="Center"
+                                                                  Width="300"
+                                                                  IsTextSearchEnabled="False"
+                                                                  ItemsPanel="{StaticResource ItemsTemplate}"
+                                                                  ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  SelectedItem="{Binding SelectedHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                                  IsEditable="True"
+                                                                  IsTabStop="True" />
+                                    </Grid>
+                                    <Grid Grid.Row="2">
+                                        <GroupBox Header="Выберите действие"
+                                                  FontSize="22"
+                                                  IsEnabled="True"
+                                                  VerticalAlignment="Top">
+                                            <StackPanel x:Name="SelectAction_StackPanel">
+                                                <StackPanel.Resources>
+                                                    <Style TargetType="RadioButton">
+                                                        <Setter Property="Margin"
+                                                                Value="0,5" />
+                                                        <Setter Property="VerticalContentAlignment"
+                                                                Value="Center" />
+                                                        <Setter Property="HorizontalAlignment"
+                                                                Value="Left" />
+                                                    </Style>
+                                                </StackPanel.Resources>
+                                                <RadioButton Content="Редактировать"
+                                                             Tag="Edit"
+                                                             IsChecked="True"
+                                                             x:Name="Edit_RadioButton" />
+                                                <RadioButton Content="Удалить"
+                                                             Tag="Delete"
+                                                             IsChecked="{Binding IsEditMod, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                             x:Name="Delete_RadioButton" />
+                                            </StackPanel>
+                                        </GroupBox>
+                                    </Grid>
+                                </Grid>
+                                <Grid Grid.Column="2"
+                                      DataContext="{Binding ItemViewModel}"
+                                      IsEnabled="{Binding ElementName=SelectItemToEdit_ComboBox, Path=SelectedIndex, Converter={StaticResource intToBoolConverter}}">
+                                    <Grid x:Name="SelectEdit_Grid"
+                                          Visibility="{Binding ElementName=Edit_RadioButton, Path=IsChecked, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWay}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2*" />
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Row="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="4*" />
+                                                    <ColumnDefinition Width="10*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Название:" />
+                                                <TextBox x:Name="ItemToEditName_TextBox"
+                                                         Grid.Column="1"
+                                                         Width="Auto"
+                                                         MinWidth="250"
+                                                         MaxWidth="320"
+                                                         HorizontalScrollBarVisibility="Auto"
+                                                         VerticalAlignment="Center"
+                                                         Text="{Binding SelectedHeader, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         HorizontalAlignment="Left" />
+
+                                            </Grid>
+                                            <Grid Grid.Row="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="16*" />
+                                                    <ColumnDefinition Width="34*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Количество:" />
+                                                <control:IntegerUpDown Grid.Column="1"
+                                                                       ValueChanged="{Binding }"
+                                                                       HorizontalAlignment="Left"
+                                                                       MinValue="1"
+                                                                       Value="1" />
+                                            </Grid>
+                                            <Grid Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="8*" />
+                                                    <ColumnDefinition Width="45*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Цена:" />
+                                                <!--TODO IntegerUpDown-->
+                                            </Grid>
+                                            <Grid Grid.Row="3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Мод:" />
+                                                <ComboBox x:Name="ItemToEditMod_ComboBox"
+                                                          Grid.Column="1"
+                                                          IsEditable="True"
+                                                          IsTextSearchEnabled="False"
+                                                          HorizontalAlignment="Left"
+                                                          VerticalAlignment="Center"
+                                                          Width="250"
+                                                          ItemsSource="{Binding ServerViewModel.Mods, Mode=OneWay, UpdateSourceTrigger=LostFocus}"
+                                                          Text="{Binding ItemViewModel.SelectedItem.Mod, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid Grid.Row="2">
+                                            <Button x:Name="Edit_Button"
+                                                    HorizontalAlignment="Center"
+                                                    Content="Редактировать"
+                                                    VerticalAlignment="Center"
+                                                    Width="Auto"
+                                                    Padding="15,10"
+                                                    MinWidth="200"
+                                                    Click="Edit_Button_Click" />
+                                        </Grid>
+                                    </Grid>
+                                    <Grid x:Name="SelectDelete_Grid"
+                                          Visibility="{Binding ElementName=Delete_RadioButton, Path=IsChecked, Converter={StaticResource boolToVisibilityConverter}, Mode=TwoWay}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2*" />
+                                            <RowDefinition Height="1*" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0"
+                                              DataContext="{Binding ItemViewModel.SelectedItem}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Row="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="4*" />
+                                                    <ColumnDefinition Width="10*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Название:" />
+                                                <ScrollViewer VerticalScrollBarVisibility="Disabled"
+                                                              HorizontalScrollBarVisibility="Auto"
+                                                              Grid.Column="1">
+                                                    <TextBlock x:Name="ToDeleteItemName_TextBlock"
+                                                               Text="{Binding Header, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                                </ScrollViewer>
+                                            </Grid>
+                                            <Grid Grid.Row="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="16*" />
+                                                    <ColumnDefinition Width="34*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Количество:" />
+                                                <TextBlock x:Name="ToDeleteItemCount_TextBlock"
+                                                           Grid.Column="1"
+                                                           Text="{Binding Count, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                            </Grid>
+                                            <Grid Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="87*" />
+                                                    <ColumnDefinition Width="410*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Цена:" />
+                                                <TextBlock x:Name="ToDeleteItemPrice_TextBlock"
+                                                           Grid.Column="1"
+                                                           Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                            </Grid>
+                                            <Grid Grid.Row="3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="5*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Мод:" />
+                                                <TextBlock x:Name="ToDeleteItemMod_TextBlock"
+                                                           Grid.Column="1"
+                                                           Text="{Binding Mod, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+                                            </Grid>
+                                        </Grid>
+                                        <Grid Grid.Row="2">
+                                            <Button x:Name="Delete_Button"
+                                                    Grid.Column="0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Width="200"
+                                                    Content="Удалить"
+                                                    Padding="20,10"
+                                                    Click="Delete_Button_Click" />
+                                        </Grid>
                                     </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>
-
                         <Grid x:Name="Add_Grid"
                               Visibility="Hidden">
                             <Grid.ColumnDefinitions>
@@ -911,15 +929,12 @@
                     </Grid>
                 </Grid>
             </Grid>
-            <!--#region Navigation Bar-->
-            <!--// Navigation Panel //-->
             <Grid x:Name="NavigationPanel"
                   Panel.ZIndex="101"
                   HorizontalAlignment="Left"
                   Width="65"
                   Background="#FFC4F7FF">
                 <StackPanel>
-                    <!--// Grid for the Menu Toggle Button //-->
                     <Grid Height="90">
                         <!--// Menu title text //-->
                         <TextBlock  Grid.Row="1"
@@ -1003,29 +1018,9 @@
                             </StackPanel>
                             <ListViewItem.ToolTip>
                                 <ToolTip x:Name="toolTipHome"
-                                         Content="Главная"
-                                         Style="{StaticResource ToolTipStyle}" />
+                                         Content="Главная" />
                             </ListViewItem.ToolTip>
                         </ListViewItem>
-                        <!--// Exchange //-->
-                        <!--<ListViewItem Tag="Exchange">
-                        <StackPanel Orientation="Horizontal"
-                                    Width="230">
-                            <Image Source="Assets/exchange.png"
-                                   Stretch="Fill"
-                                   Margin="3"
-                                   Opacity="0.85">
-                            </Image>
-                            <TextBlock Text="Обмен"
-                                       Style="{StaticResource TextBlockStyle}" />
-                        </StackPanel>
-                        <ListViewItem.ToolTip>
-                            <ToolTip x:Name="toolTipExchange"
-                                     Content="Обмен"
-                                     Style="{StaticResource ToolTipStyle}" />
-                        </ListViewItem.ToolTip>
-                    </ListViewItem>-->
-                        <!--// Edit //-->
                         <ListViewItem Tag="Edit">
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
@@ -1037,11 +1032,9 @@
                             </StackPanel>
                             <ListViewItem.ToolTip>
                                 <ToolTip x:Name="toolTipEdit"
-                                         Content="Редактировать"
-                                         Style="{StaticResource ToolTipStyle}" />
+                                         Content="Редактировать" />
                             </ListViewItem.ToolTip>
                         </ListViewItem>
-                        <!--// Add //-->
                         <ListViewItem Tag="Add">
                             <StackPanel Orientation="Horizontal"
                                         Width="230">
@@ -1053,21 +1046,15 @@
                             </StackPanel>
                             <ListViewItem.ToolTip>
                                 <ToolTip x:Name="toolTipAdd"
-                                         Content="Добавить данные"
-                                         Style="{StaticResource ToolTipStyle}" />
+                                         Content="Добавить данные" />
                             </ListViewItem.ToolTip>
                         </ListViewItem>
-
-                        <!--// Settings //-->
-                        <!--// Listview items style template //-->
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalAlignment"
                                         Value="Left" />
                                 <Setter Property="Margin"
                                         Value="0,0,0,15" />
-                                <EventSetter Event="MouseEnter"
-                                             Handler="ListViewItem_MouseEnter" />
                                 <EventSetter Event="MouseLeftButtonUp"
                                              Handler="ListViewItem_MouseLeftButtonUp" />
                                 <Setter Property="Foreground"
