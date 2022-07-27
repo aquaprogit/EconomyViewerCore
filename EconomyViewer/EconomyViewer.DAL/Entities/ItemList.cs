@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace EconomyViewer.DAL.Entities;
-internal class ItemList : IEnumerable<Item>, ICollection<Item>
+public class ItemList : ICollection<Item>
 {
     private readonly List<Item> _items;
 
@@ -27,7 +27,7 @@ internal class ItemList : IEnumerable<Item>, ICollection<Item>
         if (same == null)
             _items.Add((Item)item.Clone());
         else
-            same.IncreaseCount(item.Count);
+            same.Count += item.Count;
     }
 
     public void Clear()
@@ -61,7 +61,7 @@ internal class ItemList : IEnumerable<Item>, ICollection<Item>
 
         if (same.Count > item.Count)
         {
-            same.DecreaseCount(item.Count);
+            same.Count -= item.Count;
             return true;
         }
         return false;
