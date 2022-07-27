@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using EconomyViewer.DAL.Entities;
 
-namespace EconomyViewer.DAL.ViewModel;
+namespace EconomyViewer.MVVM.ViewModel;
 
 public class ItemViewModel : ViewModelBase
 {
@@ -55,4 +52,6 @@ public class ItemViewModel : ViewModelBase
     }
     public int Price => SelectedItem?.Price ?? 0;
     public string? Mod => SelectedItem?.Mod;
+
+
 }

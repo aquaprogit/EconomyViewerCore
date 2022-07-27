@@ -6,7 +6,7 @@ using EconomyViewer.DAL.Entities;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace EconomyViewer.DAL.ViewModel;
+namespace EconomyViewer.MVVM.ViewModel;
 
 public class ServerViewModel : ViewModelBase
 {

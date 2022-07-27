@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer.Utility", "Ec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EconomyViewer", "EconomyViewer\EconomyViewer.csproj", "{739C5C47-E92F-4434-9935-264ABA97DE32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemTests", "ItemTests\ItemTests.csproj", "{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ItemTests", "ItemTests\ItemTests.csproj", "{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EconomyViewer.MVVM", "EconomyViewer.MVVM\EconomyViewer.MVVM.csproj", "{0ACCBC8E-E875-474B-AFD6-B137BCCCAB56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAE8E1AE-74C9-4F9D-BBA1-AA24C7A0CF71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ACCBC8E-E875-474B-AFD6-B137BCCCAB56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ACCBC8E-E875-474B-AFD6-B137BCCCAB56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ACCBC8E-E875-474B-AFD6-B137BCCCAB56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ACCBC8E-E875-474B-AFD6-B137BCCCAB56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
