@@ -218,11 +218,12 @@
                                                               Grid.Row="1"
                                                               HorizontalAlignment="Left"
                                                               VerticalAlignment="Center"
+                                                              DataContext="{Binding ItemViewModel}"
                                                               Width="300"
                                                               IsTextSearchEnabled="False"
                                                               ItemsPanel="{StaticResource ItemsTemplate}"
                                                               ItemsSource="{Binding Headers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                                              SelectedItem="{Binding SelectedItemHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                                              SelectedItem="{Binding SelectedHeader, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                                                               IsEditable="True"
                                                               IsTabStop="True" />
                                 </Grid>
@@ -275,7 +276,7 @@
                                             <ListView x:Name="MainFilterList_ListView"
                                                       BorderBrush="{x:Null}"
                                                       BorderThickness="0"
-                                                      ItemsSource="{Binding Mods, Converter={StaticResource stringsToCheckBoxesConverter}}"
+                                                      ItemsSource="{Binding Mods}"
                                                       HorizontalContentAlignment="Stretch"
                                                       Background="{x:Null}">
                                                 <ListView.ItemContainerStyle>
@@ -307,7 +308,8 @@
                                     </GroupBox>
                                 </Grid>
                             </Grid>
-                            <Grid Grid.Column="2">
+                            <Grid Grid.Column="2"
+                                  DataContext="{Binding ItemViewModel}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="2*" />
                                     <RowDefinition Height="5*" />
@@ -334,7 +336,7 @@
                                                      Grid.Column="0"
                                                      TextWrapping="Wrap"
                                                      Focusable="True"
-                                                     Text="{Binding SelectedItem.StringFormat, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                     Text="{Binding StringFormat, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ScrollViewer>
                                         <Button x:Name="MainCopyValue_Button"
                                                 Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
@@ -368,7 +370,7 @@
                                         <ScrollViewer VerticalScrollBarVisibility="Disabled"
                                                       HorizontalScrollBarVisibility="Auto"
                                                       Grid.Column="1">
-                                            <TextBlock Text="{Binding SelectedItem.Header, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock Text="{Binding SelectedHeader, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ScrollViewer>
                                     </Grid>
                                     <Grid Grid.Row="1">
@@ -377,7 +379,10 @@
                                             <ColumnDefinition Width="340*" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="Количество:" />
-                                        <!--TODO IntegerUpDown-->
+                                        <control:IntegerUpDown Grid.Column="1"
+                                                               HorizontalAlignment="Left"
+                                                               MinValue="0"
+                                                               Value="{Binding Count, Mode=TwoWay}" />
                                     </Grid>
                                     <Grid Grid.Row="2">
                                         <Grid.ColumnDefinitions>
@@ -386,7 +391,7 @@
                                             <ColumnDefinition Width="310*" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="Цена:" />
-                                        <TextBlock Text="{Binding SelectedItem.Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}, ConverterCulture=de-DE}"
+                                        <TextBlock Text="{Binding Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N0}, ConverterCulture=de-DE}"
                                                    Grid.Column="1" />
                                     </Grid>
                                     <Grid Grid.Row="3">
@@ -403,7 +408,7 @@
                                         <ScrollViewer HorizontalScrollBarVisibility="Auto"
                                                       Grid.Column="1"
                                                       VerticalScrollBarVisibility="Hidden">
-                                            <TextBlock Text="{Binding SelectedItem.Mod, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            <TextBlock Text="{Binding Mod, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </ScrollViewer>
                                         <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                 Grid.Column="2"
