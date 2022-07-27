@@ -73,14 +73,26 @@ namespace EconomyViewer.Control
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        private void UpButton_Click(object sender, RoutedEventArgs e)
-        {
-            Value++;
-        }
+        private void UpButton_Click(object sender, RoutedEventArgs e) => Value++;
 
-        private void DownButton_Click(object sender, RoutedEventArgs e)
+        private void DownButton_Click(object sender, RoutedEventArgs e) => Value--;
+
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) => e.Handled = e.Text.Any(c => char.IsDigit(c) == false);
+
+        private void TextBox_Pasting(object sender, DataObjectPastingEventArgs e)
         {
-            Value--;
+            if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+                string text = (string)e.DataObject.GetData(typeof(string));
+                if (text.Any(c => char.IsDigit(c) == false))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
         }
     }
 }

@@ -16,12 +16,14 @@
                 <converters:IntToStringConverter x:Key="IntToStringConverter" />
             </Grid.Resources>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45" />
                 <ColumnDefinition />
+                <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
             <TextBox FontSize="24"
                      Text="{Binding Value, Mode=TwoWay}"
-                     BorderThickness="0.3,0,0,0" />
+                     BorderThickness="0.3,0,0,0" 
+                     PreviewTextInput="TextBox_PreviewTextInput"
+                     DataObject.Pasting="TextBox_Pasting"/>
             <Grid Grid.Column="1">
                 <Grid.Resources>
                     <Style TargetType="Button">
@@ -30,7 +32,7 @@
                         <Setter Property="FontFamily"
                                 Value="Bahnschrift Light Condensed" />
                         <Setter Property="BorderThickness"
-                                Value="0,0,0,0.2" />
+                                Value="0,0,0,0.5" />
                     </Style>
                 </Grid.Resources>
                 <Grid.RowDefinitions>
