@@ -55,20 +55,9 @@ public class Item : ICloneable
         int price = Convert.ToInt32(groups["Price"].Value);
         return new Item(header, count, price, mod);
     }
-    public void IncreaseCount(int value)
+    public void ChangeCount(int value)
     {
-
-    }
-    public void DecreaseCount(int value)
-    {
-        if (value < 0)
-            throw new InvalidOperationException("Value can not be less than zero.");
-        if (value >= Count)
-            throw new InvalidOperationException("Value can not be greater than source item count");
-
-        int pricePerOne = PriceForOne;
-        Count -= value;
-        Price = pricePerOne * Count;
+        _count = value;
     }
     public override string? ToString()
     {
