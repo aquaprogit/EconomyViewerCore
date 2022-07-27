@@ -25,7 +25,6 @@ namespace EconomyViewer.Control
         public IntegerUpDown()
         {
             InitializeComponent();
-            DataContext = this;
         }
         public int Value {
             get => (int)GetValue(ValueProperty);
