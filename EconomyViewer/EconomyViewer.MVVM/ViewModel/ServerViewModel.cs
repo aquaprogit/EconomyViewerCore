@@ -21,7 +21,7 @@ public class ServerViewModel : ViewModelBase
             _selectedServerName = value;
             OnPropertyChanged(nameof(SelectedServer));
             OnPropertyChanged(nameof(Mods));
-            ItemViewModel.Items = SelectedServer?.Items;
+            ItemViewModel.Items = SelectedServer?.Items!;
         }
     }
     public List<string> Mods => SelectedServer?.Items.Select(s => s.Mod)
@@ -31,7 +31,7 @@ public class ServerViewModel : ViewModelBase
     public ServerViewModel()
     {
         ApplicationContext.Context.SavedChanges += Context_SavedChanges;
-        ItemViewModel = new ItemViewModel() { Items = SelectedServer?.Items };
+        ItemViewModel = new ItemViewModel(SelectedServer?.Items);
     }
 
     private void Context_SavedChanges(object? sender, SavedChangesEventArgs e)

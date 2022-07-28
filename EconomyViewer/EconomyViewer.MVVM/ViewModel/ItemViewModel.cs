@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using EconomyViewer.DAL.Entities;
@@ -7,10 +8,17 @@ namespace EconomyViewer.MVVM.ViewModel;
 
 public class ItemViewModel : ViewModelBase
 {
-    private Item _selectedItem;
-    private List<Item>? _items;
+    private Item? _selectedItem;
+    private List<Item> _items;
 
-    public List<Item>? Items {
+    public ItemViewModel(List<Item>? items)
+    {
+        _items = items ?? throw new ArgumentNullException(nameof(items));
+    }
+
+    public Item? SelectedCopy { get; private set; }
+
+    public List<Item> Items {
         get => _items;
         set {
             _items = value;
@@ -18,40 +26,20 @@ public class ItemViewModel : ViewModelBase
         }
     }
     public List<string> Headers => Items?.Select(i => i.Header).ToList() ?? new List<string>();
+
     public string SelectedHeader {
-        get => _selectedItem?.Header ?? "";
+        get => _selectedItem?.Header ?? string.Empty;
         set {
-            if (_selectedItem?.Header == value)
+            if (value == null)
                 return;
-            if (value != null && Headers.Contains(value))
-                SelectedItem = (Item)Items!.First(item => item.Header == value).Clone();
+            if (Headers.Contains(value))
+            {
+                _selectedItem = Items.Find(item => item.Header == value)!;
+                SelectedCopy = _selectedItem.Clone() as Item;
+                if (_selectedItem != null)
+                    SelectedCopy!.PropertyChanged += (sender, e) => { OnPropertyChanged(nameof(SelectedCopy)); };
+                OnPropertyChanged(nameof(SelectedCopy));
+            }
         }
     }
-
-    public Item SelectedItem {
-        get => _selectedItem;
-        set {
-            _selectedItem = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(StringFormat));
-            OnPropertyChanged(nameof(Count));
-            OnPropertyChanged(nameof(Price));
-            OnPropertyChanged(nameof(Mod));
-
-        }
-    }
-    public string StringFormat => SelectedItem?.StringFormat ?? "";
-    public int Count {
-        get => SelectedItem?.Count ?? 1;
-        set {
-            SelectedItem.Count = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(Price));
-            OnPropertyChanged(nameof(SelectedItem));
-        }
-    }
-    public int Price => SelectedItem?.Price ?? 0;
-    public string? Mod => SelectedItem?.Mod;
-
-
 }
