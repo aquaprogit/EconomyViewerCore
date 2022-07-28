@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EconomyViewer.Control;
 
@@ -26,14 +16,12 @@ public partial class IntegerUpDown : UserControl, INotifyPropertyChanged
     {
         InitializeComponent();
     }
-    public EventHandler<int> ValueChanged { get; set; }
     public int Value {
         get => (int)GetValue(ValueProperty);
         set {
             if (value >= MinValue && value <= MaxValue)
             {
                 SetValue(ValueProperty, value);
-                ValueChanged(this, value);
                 OnPropertyChanged(nameof(IsIncreasable));
                 OnPropertyChanged(nameof(IsDecreasable));
             }
@@ -77,7 +65,12 @@ public partial class IntegerUpDown : UserControl, INotifyPropertyChanged
 
     private void DownButton_Click(object sender, RoutedEventArgs e) => Value--;
 
-    private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) => e.Handled = e.Text.Any(c => char.IsDigit(c) == false);
+    private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+    {
+        e.Handled = e.Text.Any(c => char.IsDigit(c) == false);
+        int integer = int.Parse(e.Text);
+        e.Handled = integer < 0 || integer > int.MaxValue;
+    }
 
     private void TextBox_Pasting(object sender, DataObjectPastingEventArgs e)
     {
