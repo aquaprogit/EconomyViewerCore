@@ -505,12 +505,7 @@
                                                        Text="{Binding TotalSum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                     Grid.Column="2"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Center"
-                                                    x:Name="MainClearToSumUp_Button"
-                                                    Click="MainClearToSumUp_Button_Click"
-                                                    Margin="5,2"
-                                                    Width="50">
+                                                    Command="{Binding ClearItemsCommand}">
                                                 <Button.ToolTip>
                                                     <ToolTip HorizontalOffset="-75"
                                                              Placement="Left"
@@ -519,12 +514,9 @@
                                                 <Image Source="Assets/trash.png"
                                                        Width="45" />
                                             </Button>
-
-
                                         </Grid>
                                     </Grid>
                                 </Grid>
-
                             </Grid>
                         </Grid>
                         <Grid x:Name="Edit_Grid"

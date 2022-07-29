@@ -49,15 +49,6 @@ public partial class MainWindow : Window
     {
 
     }
-
-    private void MainRemoveFromSumUp_Button_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-
-
-
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
 
@@ -72,18 +63,7 @@ public partial class MainWindow : Window
     {
 
     }
-
-    private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
-    {
-
-    }
-
     private void CheckBox_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-    private void Edit_Button_Click(object sender, RoutedEventArgs e)
     {
 
     }
@@ -97,11 +77,4 @@ public partial class MainWindow : Window
     {
 
     }
-
-    private void MainAddToSumUp_Button_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
-
-
 }

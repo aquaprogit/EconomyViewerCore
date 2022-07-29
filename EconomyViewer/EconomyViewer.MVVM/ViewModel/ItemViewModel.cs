@@ -18,19 +18,22 @@ public class ItemViewModel : ViewModelBase
         _items = items ?? throw new ArgumentNullException(nameof(items));
         ToSumUpItems = new ItemList();
         RemoveItemCommand = new RelayCommand((obj) => {
-            if (ToSumUpItems.Any() == false)
-                return;
             ToSumUpItems.Remove(ToSumUpItems.Last());
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
         },
-        (obj) => true);
+        (obj) => ToSumUpItems.Any());
         AddItemCommand = new RelayCommand((obj) => {
             ToSumUpItems.Add(SelectedCopy!);
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
         },
         (obj) => true);
+        ClearItemsCommand = new RelayCommand((obj) => {
+            ToSumUpItems.Clear();
+            OnPropertyChanged(nameof(TotalSum));
+            OnPropertyChanged(nameof(ToSumUpContent));
+        }, (obj) => true);
     }
 
     public Item? SelectedCopy {
@@ -44,6 +47,8 @@ public class ItemViewModel : ViewModelBase
         get => _items;
         set {
             _items = value;
+            ClearItemsCommand.Execute(this);
+            OnPropertyChanged(nameof(SelectedCopy));
             OnPropertyChanged(nameof(Headers));
         }
     }
@@ -69,4 +74,5 @@ public class ItemViewModel : ViewModelBase
     public int TotalSum => ToSumUpItems.Sum(i => i.Price);
     public RelayCommand AddItemCommand { get; }
     public RelayCommand RemoveItemCommand { get; }
+    public RelayCommand ClearItemsCommand { get; }
 }
