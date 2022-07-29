@@ -75,7 +75,7 @@ public class Item : INotifyPropertyChanged, ICloneable
     {
         _count = value;
     }
-    public override string? ToString()
+    public override string ToString()
     {
         return $"{Header} {Count} шт. - {Price}";
     }
