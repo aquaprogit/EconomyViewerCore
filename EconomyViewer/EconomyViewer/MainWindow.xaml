@@ -431,8 +431,8 @@
                                             </ScrollViewer>
                                             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                     Grid.Column="2"
-                                                    x:Name="MainAddToSumUp_Button"
-                                                    Click="MainAddToSumUp_Button_Click">
+                                                    IsEnabled="True"
+                                                    Command="{Binding AddItemCommand, Mode=OneWay}">
                                                 <Button.ToolTip>
                                                     <ToolTip HorizontalOffset="-75"
                                                              Placement="Left"
@@ -443,8 +443,8 @@
                                             </Button>
                                             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                     Grid.Column="3"
-                                                    x:Name="MainRemoveFromSumUp_Button"
-                                                    Click="MainRemoveFromSumUp_Button_Click">
+                                                    IsEnabled="{Binding ElementName=MainSelectItem_ComboBox, Path=SelectedIndex, Converter={StaticResource ResourceKey=intToBoolConverter}}"
+                                                    Command="{Binding RemoveItemCommand, Mode=OneWay}">
                                                 <Button.ToolTip>
                                                     <ToolTip HorizontalOffset="-75"
                                                              Placement="Left"
@@ -467,37 +467,27 @@
                                             <RowDefinition />
                                             <RowDefinition Height="50" />
                                         </Grid.RowDefinitions>
-                                        <RichTextBox x:Name="MainToSumUpContainer_RichTextBox"
-                                                     Grid.Column="1"
-                                                     IsReadOnly="True"
-                                                     HorizontalScrollBarVisibility="Auto"
-                                                     VerticalScrollBarVisibility="Auto"
-                                                     Grid.Row="1"
-                                                     FontSize="20">
-                                            <RichTextBox.Resources>
-                                                <Style TargetType="{x:Type Paragraph}">
-                                                    <Setter Property="Margin"
-                                                            Value="0" />
-                                                </Style>
-                                            </RichTextBox.Resources>
-                                        </RichTextBox>
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Stretch"
+                                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                   Text="{Binding ToSumUpContent, Mode=OneWay}" />
                                         <Grid Grid.Row="2"
                                               Grid.Column="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto"
-                                                                  MinWidth="25" />
-                                                <ColumnDefinition Width="*"
-                                                                  MinWidth="50" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock x:Name="MainToSumUpResult_TextBlock"
                                                        Text="Итоговая сумма:"
                                                        FontSize="20" />
                                             <TextBlock x:Name="MainToSumupResult_Int"
                                                        Grid.Column="1"
-                                                       Margin="5,0,0,0"
+                                                       Margin="15,0,0,0"
                                                        FontSize="20"
-                                                       Text="{Binding ToSumUpResult, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                       Text="{Binding TotalSum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                     Grid.Column="2"
                                                     HorizontalAlignment="Right"
