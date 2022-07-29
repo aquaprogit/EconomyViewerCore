@@ -10,6 +10,7 @@ public class Item : INotifyPropertyChanged, ICloneable
     private static readonly Regex _singleItemPattent = new Regex(@"(?<Header>.+)\W+(?<Price>\d+)");
     private int _count = 1;
     private int _price;
+    private readonly bool _isEmptyItem = false;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string propName = "")
@@ -39,7 +40,10 @@ public class Item : INotifyPropertyChanged, ICloneable
     public string Mod { get; init; } = string.Empty;
     public string? StringFormat => ToString();
 
-    public Item() { }
+    public Item()
+    {
+        _isEmptyItem = true;
+    }
     public Item(string header, int count, int price, string mod, int id = 0)
     {
         ID = id;
@@ -77,7 +81,7 @@ public class Item : INotifyPropertyChanged, ICloneable
     }
     public override string ToString()
     {
-        return $"{Header} {Count} шт. - {Price}";
+        return _isEmptyItem ? string.Empty : $"{Header} {Count} шт. - {Price}";
     }
 
     public object Clone()
