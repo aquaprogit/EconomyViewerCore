@@ -11,6 +11,8 @@ public class ItemViewModel : ViewModelBase
 {
     private Item? _selectedItem;
     private List<Item> _items;
+    private Item? _selectedCopy;
+
     public ItemViewModel(List<Item>? items)
     {
         _items = items ?? throw new ArgumentNullException(nameof(items));
@@ -29,7 +31,13 @@ public class ItemViewModel : ViewModelBase
         (obj) => true);
     }
 
-    public Item? SelectedCopy { get; private set; }
+    public Item? SelectedCopy {
+        get => _selectedCopy;
+        private set {
+            _selectedCopy = value;
+            OnPropertyChanged();
+        }
+    }
     public List<Item> Items {
         get => _items;
         set {
@@ -42,14 +50,15 @@ public class ItemViewModel : ViewModelBase
         get => _selectedItem?.Header ?? string.Empty;
         set {
             if (value == null)
-                return;
-            if (Headers.Contains(value))
+            {
+                SelectedCopy = new Item();
+            }
+            else if (Headers.Contains(value))
             {
                 _selectedItem = Items.Find(item => item.Header == value)!;
                 SelectedCopy = _selectedItem.Clone() as Item;
                 if (_selectedItem != null)
                     SelectedCopy!.PropertyChanged += (sender, e) => { OnPropertyChanged(nameof(SelectedCopy)); };
-                OnPropertyChanged(nameof(SelectedCopy));
             }
         }
     }
