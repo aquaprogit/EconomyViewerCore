@@ -31,7 +31,8 @@ public partial class MainWindow : Window
     }
     private void Window_MouseDown(object sender, MouseButtonEventArgs e)
     {
-        DragMove();
+        if (e.LeftButton == MouseButtonState.Pressed)
+            DragMove();
     }
     private void ListViewItem_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
