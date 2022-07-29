@@ -18,6 +18,8 @@ public class ItemViewModel : ViewModelBase
         _items = items ?? throw new ArgumentNullException(nameof(items));
         ToSumUpItems = new ItemList();
         RemoveItemCommand = new RelayCommand((obj) => {
+            if (ToSumUpItems.Any() == false)
+                return;
             ToSumUpItems.Remove(ToSumUpItems.Last());
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
