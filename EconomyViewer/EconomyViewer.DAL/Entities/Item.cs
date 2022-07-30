@@ -31,7 +31,7 @@ public class Item : INotifyPropertyChanged, ICloneable
     }
     public int Price {
         get => _price;
-        private set {
+        set {
             if (value > 0)
                 _price = value;
         }
