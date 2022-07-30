@@ -14,9 +14,6 @@
             Width="{Binding ElementName=root, Path=ActualWidth}"
             BorderThickness="0.5">
         <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
-            <Grid.Resources>
-                <converters:IntToStringConverter x:Key="IntToStringConverter" />
-            </Grid.Resources>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="30" />

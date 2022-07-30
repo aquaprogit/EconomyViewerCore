@@ -419,8 +419,8 @@
                                             </Button>
                                             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                     Grid.Column="3"
-                                                    IsEnabled="{Binding ToSumUpItems.Count, Converter={StaticResource CountToBoolConverter}}"
-                                                    Command="{Binding RemoveItemCommand, Mode=OneWay}">
+                                                    IsEnabled="True"
+                                                    Command="{Binding RemoveItemCommand, UpdateSourceTrigger=PropertyChanged}">
                                                 <Button.Resources>
                                                     <Style TargetType="Border">
                                                         <Setter Property="CornerRadius"
@@ -489,7 +489,7 @@
                             </Grid>
                         </Grid>
                         <Grid x:Name="Edit_Grid"
-                              Visibility="Visible">
+                              Visibility="Hidden">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="45" />
                                 <RowDefinition />
@@ -714,175 +714,175 @@
                             </Grid>
                         </Grid>
                         <Grid x:Name="Add_Grid"
-                              Visibility="Hidden">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="63*" />
-                                <ColumnDefinition Width="55" />
-                                <ColumnDefinition Width="95*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="58*" />
-                                    <RowDefinition Height="68*" />
-                                    <RowDefinition Height="107*" />
-                                </Grid.RowDefinitions>
-                                <Grid Grid.Row="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="Сервер:" />
-                                    <ComboBox Grid.Row="1"
-                                              HorizontalAlignment="Left"
-                                              VerticalAlignment="Center"
-                                              Width="250"
-                                              ItemsSource="{Binding ServerNames}"
-                                              SelectedItem="{Binding SelectedServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              VerticalContentAlignment="Center" />
+                              Visibility="Visible">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="45" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Добавить"
+                                       FontSize="34"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Top" />
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="55" />
+                                    <ColumnDefinition Width="3*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <StackPanel>
+                                        <TextBlock Text="Сервер:"
+                                                   Margin="5,0,0,5" />
+                                        <ComboBox Grid.Row="1"
+                                                  HorizontalAlignment="Left"
+                                                  Width="250"
+                                                  ItemsSource="{Binding ServerNames}"
+                                                  SelectedItem="{Binding SelectedServerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  VerticalContentAlignment="Center"
+                                                  Margin="5,0,0,139" />
+                                        <GroupBox Header="Режим"
+                                                  FontSize="22"
+                                                  Margin="5,0">
+                                            <StackPanel>
+                                                <StackPanel.Resources>
+                                                    <Style TargetType="{x:Type RadioButton}">
+                                                        <Setter Property="VerticalContentAlignment"
+                                                                Value="Center" />
+                                                        <Setter Property="Margin"
+                                                                Value="0,5" />
+                                                    </Style>
+                                                </StackPanel.Resources>
+                                                <RadioButton x:Name="Common_RadioButton"
+                                                             Tag="Common"
+                                                             Content="Обычный"
+                                                             IsChecked="True" />
+                                                <RadioButton x:Name="Fast_RadioButton"
+                                                             Tag="Fast"
+                                                             Content="Быстрый"
+                                                             IsChecked="{Binding IsFastAdding, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </GroupBox>
+                                    </StackPanel>
                                 </Grid>
-                                <Grid Grid.Row="1">
-                                    <GroupBox Header="Режим">
-                                        <StackPanel x:Name="AddSelectAction_StackPanel">
-                                            <StackPanel.Resources>
-                                                <Style TargetType="{x:Type RadioButton}">
-                                                    <Setter Property="VerticalContentAlignment"
-                                                            Value="Center" />
-                                                    <Setter Property="FontSize"
-                                                            Value="24" />
-                                                    <Setter Property="Margin"
-                                                            Value="0,0,0,10" />
-                                                </Style>
-                                            </StackPanel.Resources>
-                                            <RadioButton x:Name="Common_RadioButton"
-                                                         Tag="Common"
-                                                         Content="Обычный"
-                                                         IsChecked="True" />
-                                            <RadioButton x:Name="Fast_RadioButton"
-                                                         Tag="Fast"
-                                                         Content="Быстрый"
-                                                         IsChecked="{Binding IsFastAdding, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
-                                        </StackPanel>
-                                    </GroupBox>
-                                </Grid>
-                            </Grid>
-
-                            <Grid Grid.Column="2">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="65*" />
-                                    <RowDefinition Height="30*" />
-                                </Grid.RowDefinitions>
-                                <Grid x:Name="FastAdding_Grid"
-                                      Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Fast_RadioButton, Mode=TwoWay}">
+                                <Grid Grid.Column="2">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="3*" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="185" />
+                                        <RowDefinition Height="2*" />
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
-                                    <RichTextBox x:Name="ToAddData_RichTextBox"
-                                                 Margin="15"
-                                                 FontSize="18"
-                                                 SelectionBrush="#FFFFC80B"
-                                                 ScrollViewer.CanContentScroll="True"
-                                                 VerticalScrollBarVisibility="Auto"
-                                                 HorizontalScrollBarVisibility="Visible">
-                                        <RichTextBox.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin"
-                                                        Value="0" />
-                                            </Style>
-                                        </RichTextBox.Resources>
-                                    </RichTextBox>
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="67*" />
-                                            <ColumnDefinition Width="410*" />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Мод:" />
-                                        <ComboBox x:Name="ToFastAddItemMod_ComboBox"
-                                                  Grid.Column="1"
-                                                  HorizontalAlignment="Left"
-                                                  VerticalAlignment="Center"
-                                                  Width="250"
-                                                  FontSize="26"
-                                                  IsEditable="True"
-                                                  ItemsSource="{Binding Mods}"
-                                                  IsTextSearchEnabled="True"
-                                                  IsTextSearchCaseSensitive="False" />
-
-                                    </Grid>
-                                </Grid>
-                                <Grid x:Name="CommonAdding_Grid"
-                                      Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Common_RadioButton, Mode=TwoWay}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition Height="50" />
-                                    </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0">
+                                    <Grid x:Name="FastAdding_Grid"
+                                          Grid.Row="1"
+                                          Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Fast_RadioButton, Mode=TwoWay}">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                            <RowDefinition />
+                                            <RowDefinition Height="3*" />
+                                            <RowDefinition Height="1*" />
                                         </Grid.RowDefinitions>
-                                        <Grid Grid.Row="0">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="4*" />
-                                                <ColumnDefinition Width="10*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Название:" />
-                                            <TextBox x:Name="ToAddItemName_TextBox"
-                                                     Grid.Column="1"
-                                                     HorizontalAlignment="Left"
-                                                     VerticalAlignment="Center"
-                                                     Width="250"
-                                                     HorizontalScrollBarVisibility="Auto"
-                                                     VerticalContentAlignment="Center" />
-                                        </Grid>
+                                        <RichTextBox x:Name="ToAddData_RichTextBox"
+                                                     Margin="15"
+                                                     FontSize="18"
+                                                     SelectionBrush="#FFFFC80B"
+                                                     ScrollViewer.CanContentScroll="True"
+                                                     VerticalScrollBarVisibility="Auto"
+                                                     HorizontalScrollBarVisibility="Visible">
+                                            <RichTextBox.Resources>
+                                                <Style TargetType="{x:Type Paragraph}">
+                                                    <Setter Property="Margin"
+                                                            Value="0" />
+                                                </Style>
+                                            </RichTextBox.Resources>
+                                        </RichTextBox>
                                         <Grid Grid.Row="1">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="16*" />
-                                                <ColumnDefinition Width="34*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Количество:" />
-                                            <!--TODO IntegerUpDown-->
-                                        </Grid>
-                                        <Grid Grid.Row="2">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="8*" />
-                                                <ColumnDefinition Width="45*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Цена:" />
-                                            <!--TODO IntegerUpDown-->
-                                        </Grid>
-                                        <Grid Grid.Row="3">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="1*" />
-                                                <ColumnDefinition Width="5*" />
+                                                <ColumnDefinition Width="67*" />
+                                                <ColumnDefinition Width="410*" />
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="Мод:" />
-                                            <ComboBox x:Name="ToAddItemMod_ComboBox"
+                                            <ComboBox x:Name="ToFastAddItemMod_ComboBox"
                                                       Grid.Column="1"
                                                       HorizontalAlignment="Left"
                                                       VerticalAlignment="Center"
                                                       Width="250"
-                                                      FontSize="24"
-                                                      ItemsSource="{Binding Mods}"
+                                                      FontSize="26"
                                                       IsEditable="True"
+                                                      ItemsSource="{Binding Mods}"
                                                       IsTextSearchEnabled="True"
                                                       IsTextSearchCaseSensitive="False" />
+
                                         </Grid>
                                     </Grid>
-                                </Grid>
-                                <Grid Grid.Row="1">
-                                    <Button x:Name="ToAdd_Button"
-                                            Grid.Row="2"
-                                            HorizontalAlignment="Center"
+                                    <Grid x:Name="CommonAdding_Grid"
+                                          Grid.Row="1"
+                                          Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Common_RadioButton, Mode=TwoWay}">
+                                        <Grid Grid.Row="0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Row="0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Название:" />
+                                                <TextBox Grid.Column="1"
+                                                         HorizontalAlignment="Left"
+                                                         Margin="15,0"
+                                                         VerticalAlignment="Center"
+                                                         Width="250"
+                                                         HorizontalScrollBarVisibility="Auto"
+                                                         VerticalContentAlignment="Center" />
+                                            </Grid>
+                                            <Grid Grid.Row="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Количество:" />
+                                                <control:IntegerUpDown Grid.Column="1"
+                                                                       HorizontalAlignment="Left"
+                                                                       MinValue="1"
+                                                                       Margin="15,0" />
+                                            </Grid>
+                                            <Grid Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Цена:" />
+                                                <control:IntegerUpDown MinValue="1"
+                                                                       Grid.Column="1"
+                                                                       Margin="15,0"
+                                                                       HorizontalAlignment="Left" />
+                                            </Grid>
+                                            <Grid Grid.Row="3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="Мод:" />
+                                                <ComboBox Grid.Column="1"
+                                                          HorizontalAlignment="Left"
+                                                          VerticalAlignment="Center"
+                                                          Width="250"
+                                                          Margin="15,0"
+                                                          ItemsSource="{Binding Mods}"
+                                                          IsEditable="True"
+                                                          IsTextSearchEnabled="True"
+                                                          IsTextSearchCaseSensitive="False" />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                    <Button HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
-                                            Width="200"
-                                            Height="56"
-                                            Content="Добавить"
-                                            Click="ToAdd_Button_Click" />
+                                            Padding="50,10"
+                                            Grid.Row="3"
+                                            Content="Добавить" />
                                 </Grid>
                             </Grid>
+
                         </Grid>
                     </Grid>
                 </Grid>
