@@ -67,9 +67,13 @@ public partial class IntegerUpDown : UserControl, INotifyPropertyChanged
 
     private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
-        e.Handled = e.Text.Any(c => char.IsDigit(c) == false);
-        int integer = int.Parse(e.Text);
-        e.Handled = integer < 0 || integer > int.MaxValue;
+        bool isAnyNonDigit = e.Text.Any(c => char.IsDigit(c) == false);
+        e.Handled = isAnyNonDigit;
+        if (isAnyNonDigit == false)
+        {
+            int integer = int.Parse(e.Text);
+            e.Handled = integer < 0 || integer > int.MaxValue;
+        }
     }
 
     private void TextBox_Pasting(object sender, DataObjectPastingEventArgs e)

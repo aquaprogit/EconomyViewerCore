@@ -6,11 +6,13 @@
              xmlns:local="clr-namespace:EconomyViewer.Control"
              xmlns:converters="clr-namespace:EconomyViewer.Converter;assembly=EconomyViewer.Converter"
              d:DataContext="{d:DesignInstance Type=local:IntegerUpDown, IsDesignTimeCreatable=True}"
+             x:Name="root"
              mc:Ignorable="d"
              Height="35"
-             Width="75">
+             Width="115">
     <Border BorderBrush="Black"
-            BorderThickness="0.5,0.5,0,0.5">
+            Width="{Binding ElementName=root, Path=ActualWidth}"
+            BorderThickness="0.5">
         <Grid DataContext="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}">
             <Grid.Resources>
                 <converters:IntToStringConverter x:Key="IntToStringConverter" />
@@ -20,6 +22,8 @@
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
             <TextBox FontSize="24"
+                     MinWidth="45"
+                     VerticalContentAlignment="Center"
                      Text="{Binding Value, Mode=TwoWay, NotifyOnTargetUpdated=True, UpdateSourceTrigger=PropertyChanged}"
                      BorderThickness="0.3,0,0,0"
                      PreviewTextInput="TextBox_PreviewTextInput"
