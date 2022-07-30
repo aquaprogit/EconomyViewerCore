@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using EconomyViewer.DAL.Entities;
+using EconomyViewer.DAL.EF;
 using EconomyViewer.MVVM.Command;
 
 namespace EconomyViewer.MVVM.ViewModel;
@@ -21,19 +22,25 @@ public class ItemViewModel : ViewModelBase
             ToSumUpItems.Remove(ToSumUpItems.Last());
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
-        },
-        (obj) => ToSumUpItems.Any());
+        }, (obj) => ToSumUpItems.Any());
         AddItemCommand = new RelayCommand((obj) => {
             ToSumUpItems.Add(SelectedCopy!);
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
-        },
-        (obj) => true);
+        }, (obj) => true);
         ClearItemsCommand = new RelayCommand((obj) => {
             ToSumUpItems.Clear();
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
         }, (obj) => true);
+        SaveEditChangesCommand = new RelayCommand(obj => {
+            ApplicationContext.Context.Update(SelectedItem);
+            ApplicationContext.Context.SaveChanges();
+        }, (obj) => SelectedItem is not null);
+        DeleteItemCommand = new RelayCommand((obj) => {
+            ApplicationContext.Context.Remove(SelectedItem);
+            ApplicationContext.Context.SaveChanges();
+        }, (obj) => SelectedItem is not null);
     }
 
     public Item? SelectedCopy {
@@ -53,6 +60,13 @@ public class ItemViewModel : ViewModelBase
         }
     }
     public List<string> Headers => Items?.Select(i => i.Header).ToList() ?? new List<string>();
+    public Item SelectedItem {
+        get => _selectedItem ?? new Item();
+        set {
+            _selectedItem = value;
+            OnPropertyChanged();
+        }
+    }
     public string SelectedHeader {
         get => _selectedItem?.Header ?? string.Empty;
         set {
@@ -62,9 +76,9 @@ public class ItemViewModel : ViewModelBase
             }
             else if (Headers.Contains(value))
             {
-                _selectedItem = Items.Find(item => item.Header == value)!;
-                SelectedCopy = _selectedItem.Clone() as Item;
-                if (_selectedItem != null)
+                SelectedItem = Items.Find(item => item.Header == value)!;
+                SelectedCopy = SelectedItem.Clone() as Item;
+                if (_selectedCopy != null)
                     SelectedCopy!.PropertyChanged += (sender, e) => { OnPropertyChanged(nameof(SelectedCopy)); };
             }
         }
@@ -75,4 +89,6 @@ public class ItemViewModel : ViewModelBase
     public RelayCommand AddItemCommand { get; }
     public RelayCommand RemoveItemCommand { get; }
     public RelayCommand ClearItemsCommand { get; }
+    public RelayCommand SaveEditChangesCommand { get; }
+    public RelayCommand DeleteItemCommand { get; }
 }
