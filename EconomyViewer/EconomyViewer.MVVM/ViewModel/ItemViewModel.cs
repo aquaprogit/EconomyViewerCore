@@ -27,11 +27,13 @@ public class ItemViewModel : ViewModelBase
             ToSumUpItems.Add(SelectedCopy!);
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
+            OnPropertyChanged(nameof(ToSumUpItems));
         }, (obj) => true);
         ClearItemsCommand = new RelayCommand((obj) => {
             ToSumUpItems.Clear();
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
+            OnPropertyChanged(nameof(ToSumUpItems));
         }, (obj) => true);
         SaveEditChangesCommand = new RelayCommand(obj => {
             ApplicationContext.Context.Update(SelectedItem);
