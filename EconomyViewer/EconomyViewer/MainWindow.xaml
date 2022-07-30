@@ -5,7 +5,7 @@
         xmlns:local="clr-namespace:EconomyViewer"
         xmlns:control="clr-namespace:EconomyViewer.Control"
         xmlns:converters="clr-namespace:EconomyViewer.Converter;assembly=EconomyViewer.Converter"
-        xmlns:ViewModel="clr-namespace:EconomyViewer.MVVM.ViewModel;assembly=EconomyViewer.MVVM"
+        xmlns:help="clr-namespace:EconomyViewer.MVVM.Helper;assembly=EconomyViewer.MVVM"
         x:Class="EconomyViewer.MainWindow"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance {x:Type local:MainWindow}}"
@@ -25,7 +25,6 @@
         <converters:SelectedIndexToBool x:Key="SelectedIndexToBoolConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <converters:CountToBoolConverter x:Key="CountToBoolConverter" />
-        <converters:StringsToCheckBoxesConverter x:Key="StringsToCheckBoxesConverter" />
         <Style TargetType="{x:Type Image}">
             <Setter Property="RenderOptions.BitmapScalingMode"
                     Value="HighQuality" />
@@ -45,7 +44,6 @@
             <Setter Property="Margin"
                     Value="25,0,0,0" />
         </Style>
-        <!--// Tooltip Style Template //-->
         <Style TargetType="{x:Type ToolTip}">
             <Setter Property="Placement"
                     Value="Right" />
@@ -168,7 +166,7 @@
                         </Grid.Resources>
                         <Grid x:Name="Main_Grid"
                               Grid.Row="1"
-                              Visibility="Hidden">
+                              Visibility="Visible">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="45" />
                                 <RowDefinition />
@@ -249,6 +247,11 @@
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Style>
+                                                    <DataTemplate  x:Key="Template"
+                                                                   DataType="{x:Type help:CheckBoxData}">
+                                                        <CheckBox Content="{Binding Path=Header, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                  IsChecked="{Binding Path=IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
                                                 </Grid.Resources>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition />
@@ -256,7 +259,8 @@
                                                 </Grid.RowDefinitions>
                                                 <ListView BorderBrush="{x:Null}"
                                                           BorderThickness="0"
-                                                          ItemsSource="{Binding Mods, Converter={StaticResource StringsToCheckBoxesConverter}}"
+                                                          ItemTemplate="{StaticResource ResourceKey=Template}"
+                                                          ItemsSource="{Binding Data, UpdateSourceTrigger=PropertyChanged}"
                                                           HorizontalContentAlignment="Stretch">
                                                     <ListView.ItemContainerStyle>
                                                         <Style TargetType="{x:Type ListViewItem}">
@@ -714,7 +718,7 @@
                             </Grid>
                         </Grid>
                         <Grid x:Name="Add_Grid"
-                              Visibility="Visible">
+                              Visibility="Hidden">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="45" />
                                 <RowDefinition />
