@@ -9,19 +9,32 @@ using EconomyViewer.MVVM.Command;
 using EconomyViewer.MVVM.Helper;
 using EconomyViewer.Utility;
 
+using Microsoft.EntityFrameworkCore;
+
 namespace EconomyViewer.MVVM.ViewModel;
 
 public class ItemViewModel : ViewModelBase
 {
+    private readonly Server _server;
     private Item? _selectedItem;
     private List<Item> _items;
     private Item? _selectedCopy;
     private List<CheckBoxData> _data;
 
+    private RelayCommand _addToSumUpCommand;
+    private RelayCommand _removeFromSumUpCommand;
+    private RelayCommand _saveEditedItemCommand;
+    private RelayCommand _switchAllModsCommand;
+    private RelayCommand _addRangeItemsCommand;
+    private RelayCommand _addItemCommand;
+    private RelayCommand _deleteItemCommand;
+    private RelayCommand _clearToSumUpCommand;
+
     public ItemViewModel(Server server, EventHandler<MVVMMessageBoxEventArgs> handler)
     {
         if (server == null)
             return;
+        _server = server;
         MessageBoxRequest += handler;
         Items = server.Items;
         SelectedItem = new Item(true);
@@ -30,50 +43,6 @@ public class ItemViewModel : ViewModelBase
 
         ToSumUpItems = new ItemList();
 
-        RemoveFromSumUpCommand = new RelayCommand((obj) => {
-            ToSumUpItems.Remove(ToSumUpItems.Last());
-            OnPropertyChanged(nameof(TotalSum));
-            OnPropertyChanged(nameof(ToSumUpContent));
-        }, (obj) => ToSumUpItems.Any());
-        AddToSumUpCommand = new RelayCommand((obj) => {
-            ToSumUpItems.Add(SelectedCopy!);
-            OnPropertyChanged(nameof(TotalSum));
-            OnPropertyChanged(nameof(ToSumUpContent));
-            OnPropertyChanged(nameof(ToSumUpItems));
-        }, (obj) => true);
-        ClearToSumUpCommand = new RelayCommand((obj) => {
-            MessageBox_Show(ProcessResult, "Уверены что хотите очистить список сум?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
-        }, (obj) => ToSumUpItems.Any());
-        SaveEditedItemCommand = new RelayCommand(obj => {
-            ApplicationContext.Context.Update(SelectedItem);
-            ApplicationContext.Context.SaveChanges();
-        }, (obj) => SelectedItem is not null);
-        DeleteItemCommand = new RelayCommand((obj) => {
-            ApplicationContext.Context.Remove(SelectedItem);
-            ApplicationContext.Context.SaveChanges();
-        }, (obj) => SelectedItem is not null);
-        SwitchAllModsCommand = new RelayCommand((state) => {
-            ModsToStates.ForEach(d => d.IsChecked = (bool)state!);
-        }, (obj) => SelectedItem is not null);
-        AddItemCommand = new RelayCommand((obj) => {
-            ApplicationContext.Context.Servers!.First(s => s.Name == server.Name).Items.Add(ToAdd);
-            ApplicationContext.Context.SaveChanges();
-        }, (obj) => {
-            string toStr = ToAdd.ToString();
-            bool isValidates = ToAdd.Equals(Item.FromString(toStr, ToAdd.Mod));
-            return ToAdd.Count > 0 && ToAdd.Price > 0 && isValidates;
-        });
-    }
-
-    private void ProcessResult(MessageBoxResult result)
-    {
-        if (result == MessageBoxResult.Yes)
-        {
-            ToSumUpItems.Clear();
-            OnPropertyChanged(nameof(TotalSum));
-            OnPropertyChanged(nameof(ToSumUpContent));
-            OnPropertyChanged(nameof(ToSumUpItems));
-        }
     }
 
     public List<Item> Items {
@@ -129,6 +98,7 @@ public class ItemViewModel : ViewModelBase
         set {
             if (value == null)
             {
+                SelectedItem = new Item(true);
                 SelectedCopy = new Item(true);
             }
             else if (Headers.Contains(value))
@@ -140,17 +110,62 @@ public class ItemViewModel : ViewModelBase
             }
         }
     }
-
+    public string FastAddingText { get; set; }
     public ItemList ToSumUpItems { get; set; }
     public string ToSumUpContent => string.Join('\n', ToSumUpItems.Select(i => i.ToString()));
     public int TotalSum => ToSumUpItems.Sum(i => i.Price);
 
-    public RelayCommand AddToSumUpCommand { get; }
-    public RelayCommand RemoveFromSumUpCommand { get; }
-    public RelayCommand ClearToSumUpCommand { get; }
-    public RelayCommand SaveEditedItemCommand { get; }
-    public RelayCommand DeleteItemCommand { get; }
-    public RelayCommand SwitchAllModsCommand { get; }
-    public RelayCommand AddItemCommand { get; }
-    public RelayCommand AddRangeItemsCommand { get; }
+    public RelayCommand AddToSumUpCommand => _addToSumUpCommand ??= new RelayCommand((obj) => {
+        ToSumUpItems.Add(SelectedCopy!);
+        OnPropertyChanged(nameof(TotalSum));
+        OnPropertyChanged(nameof(ToSumUpContent));
+        OnPropertyChanged(nameof(ToSumUpItems));
+    });
+    public RelayCommand RemoveFromSumUpCommand => _removeFromSumUpCommand ??= new RelayCommand((obj) => {
+        ToSumUpItems.Remove(ToSumUpItems.Last());
+        OnPropertyChanged(nameof(TotalSum));
+        OnPropertyChanged(nameof(ToSumUpContent));
+    }, (obj) => ToSumUpItems.Any());
+    public RelayCommand ClearToSumUpCommand => _clearToSumUpCommand ??= new RelayCommand((obj) => {
+        MessageBox_Show(() => {
+            ToSumUpItems.Clear();
+            OnPropertyChanged(nameof(TotalSum));
+            OnPropertyChanged(nameof(ToSumUpContent));
+            OnPropertyChanged(nameof(ToSumUpItems));
+        }, "Уверены что хотите очистить список сум?", MessageBoxType.Confirmation);
+    }, (obj) => ToSumUpItems.Any());
+    public RelayCommand SaveEditedItemCommand => _saveEditedItemCommand ??= new RelayCommand(obj => {
+        MessageBox_Show(() => {
+            ApplicationContext.Context.Update(SelectedItem!);
+            ApplicationContext.Context.SaveChanges();
+        }, "Уверены что хотите изменить объект?", MessageBoxType.Confirmation,
+        () => {
+            ApplicationContext.Context.Entry(SelectedItem!).State = EntityState.Unchanged;
+            ApplicationContext.Context.SaveChanges();
+        });
+    }, (obj) => SelectedItem is not null);
+    public RelayCommand DeleteItemCommand => _deleteItemCommand ??= new RelayCommand((obj) => {
+        MessageBox_Show(() => {
+            ApplicationContext.Context.Remove(SelectedItem!);
+            ApplicationContext.Context.Entry(_server).State = EntityState.Modified;
+            ApplicationContext.Context.SaveChanges();
+            Items = Items;
+            SelectedItem = null;
+        }, "Уверены что хотите удалить объект?", MessageBoxType.Confirmation);
+    }, (obj) => SelectedItem is not null);
+    public RelayCommand SwitchAllModsCommand => _switchAllModsCommand ??= new RelayCommand((state) => {
+        ModsToStates.ForEach(d => d.IsChecked = (bool)state!);
+    }, (obj) => SelectedItem is not null);
+    public RelayCommand AddItemCommand => _addItemCommand ??= new RelayCommand((obj) => {
+        MessageBox_Show(() => {
+            ApplicationContext.Context.Servers!.First(s => s.Name == _server.Name).Items.Add(ToAdd);
+            ApplicationContext.Context.SaveChanges();
+        }, "Предмет успешно добавлен!", MessageBoxType.Notifing);
+    }, (obj) => {
+        bool isValidates = ToAdd.Equals(Item.FromString(ToAdd.ToString(), ToAdd.Mod));
+        return ToAdd.Count > 0 && ToAdd.Price > 0 && isValidates;
+    });
+    public RelayCommand AddRangeItemsCommand => _addRangeItemsCommand ??= new RelayCommand((obj) => {
+
+    });
 }
