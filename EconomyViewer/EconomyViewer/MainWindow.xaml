@@ -409,7 +409,7 @@
                                             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                     Grid.Column="2"
                                                     IsEnabled="{Binding ElementName=MainSelectItem_ComboBox, Path=SelectedIndex, Converter={StaticResource SelectedIndexToBoolConverter}}"
-                                                    Command="{Binding AddItemCommand, Mode=OneWay}">
+                                                    Command="{Binding AddToSumUpCommand, Mode=OneWay}">
                                                 <Button.Resources>
                                                     <Style TargetType="Border">
                                                         <Setter Property="CornerRadius"
@@ -427,7 +427,7 @@
                                             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                     Grid.Column="3"
                                                     IsEnabled="True"
-                                                    Command="{Binding RemoveItemCommand, UpdateSourceTrigger=PropertyChanged}">
+                                                    Command="{Binding RemoveFromSumUpCommand, UpdateSourceTrigger=PropertyChanged}">
                                                 <Button.Resources>
                                                     <Style TargetType="Border">
                                                         <Setter Property="CornerRadius"
@@ -481,7 +481,7 @@
                                                        Text="{Binding TotalSum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
                                             <Button Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
                                                     Grid.Column="2"
-                                                    Command="{Binding ClearItemsCommand}">
+                                                    Command="{Binding ClearToSumUpCommand}">
                                                 <Button.ToolTip>
                                                     <ToolTip HorizontalOffset="-75"
                                                              Placement="Left"
@@ -496,7 +496,7 @@
                             </Grid>
                         </Grid>
                         <Grid x:Name="Edit_Grid"
-                              Visibility="Visible">
+                              Visibility="Hidden">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="45" />
                                 <RowDefinition />
@@ -646,7 +646,7 @@
                                                     VerticalAlignment="Center"
                                                     Width="Auto"
                                                     Padding="15,10"
-                                                    Command="{Binding SaveEditChangesCommand}" />
+                                                    Command="{Binding SaveEditedItemCommand}" />
                                         </Grid>
                                     </Grid>
                                     <Grid Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Delete_RadioButton}">
@@ -721,7 +721,7 @@
                             </Grid>
                         </Grid>
                         <Grid x:Name="Add_Grid"
-                              Visibility="Hidden">
+                              Visibility="Visible">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="45" />
                                 <RowDefinition />
@@ -730,7 +730,8 @@
                                        FontSize="34"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Top" />
-                            <Grid Grid.Row="1">
+                            <Grid Grid.Row="1"
+                                  DataContext="{Binding ServerViewModel}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*" />
                                     <ColumnDefinition Width="55" />
@@ -766,62 +767,70 @@
                                                 <RadioButton x:Name="Fast_RadioButton"
                                                              Tag="Fast"
                                                              Content="Быстрый"
-                                                             IsChecked="{Binding IsFastAdding, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+                                                             IsChecked="False" />
                                             </StackPanel>
                                         </GroupBox>
                                     </StackPanel>
                                 </Grid>
-                                <Grid Grid.Column="2">
+                                <!--Fast Adding Grid-->
+                                <Grid Grid.Column="2"
+                                      Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Fast_RadioButton, Mode=OneWay}">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="50" />
-                                        <RowDefinition Height="185" />
-                                        <RowDefinition Height="2*" />
-                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <Grid x:Name="FastAdding_Grid"
-                                          Grid.Row="1"
-                                          Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Fast_RadioButton, Mode=TwoWay}">
+                                    <RichTextBox Margin="15"
+                                                 FontSize="18"
+                                                 MinHeight="300"
+                                                 Height="300"
+                                                 SelectionBrush="#FFFFC80B"
+                                                 ScrollViewer.CanContentScroll="True"
+                                                 VerticalScrollBarVisibility="Auto"
+                                                 HorizontalScrollBarVisibility="Visible">
+                                        <RichTextBox.Resources>
+                                            <Style TargetType="{x:Type Paragraph}">
+                                                <Setter Property="Margin"
+                                                        Value="0" />
+                                            </Style>
+                                        </RichTextBox.Resources>
+                                    </RichTextBox>
+                                    <Grid Grid.Row="1"
+                                          Margin="15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Мод:" />
+                                        <ComboBox Grid.Column="1"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center"
+                                                  Width="250"
+                                                  FontSize="26"
+                                                  IsEditable="True"
+                                                  ItemsSource="{Binding Mods}"
+                                                  IsTextSearchEnabled="True"
+                                                  IsTextSearchCaseSensitive="False" />
+
+                                    </Grid>
+                                    <Button HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Padding="50,10"
+                                            Grid.Row="2"
+                                            Content="Добавить" />
+                                </Grid>
+                                <!--Common Adding Grid-->
+                                <Grid Grid.Column="2"
+                                      Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Common_RadioButton, Mode=OneWay}">
+                                    <Grid Grid.Row="0">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="3*" />
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="185" />
+                                            <RowDefinition Height="2*" />
                                             <RowDefinition Height="1*" />
                                         </Grid.RowDefinitions>
-                                        <RichTextBox x:Name="ToAddData_RichTextBox"
-                                                     Margin="15"
-                                                     FontSize="18"
-                                                     SelectionBrush="#FFFFC80B"
-                                                     ScrollViewer.CanContentScroll="True"
-                                                     VerticalScrollBarVisibility="Auto"
-                                                     HorizontalScrollBarVisibility="Visible">
-                                            <RichTextBox.Resources>
-                                                <Style TargetType="{x:Type Paragraph}">
-                                                    <Setter Property="Margin"
-                                                            Value="0" />
-                                                </Style>
-                                            </RichTextBox.Resources>
-                                        </RichTextBox>
-                                        <Grid Grid.Row="1">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="67*" />
-                                                <ColumnDefinition Width="410*" />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="Мод:" />
-                                            <ComboBox x:Name="ToFastAddItemMod_ComboBox"
-                                                      Grid.Column="1"
-                                                      HorizontalAlignment="Left"
-                                                      VerticalAlignment="Center"
-                                                      Width="250"
-                                                      FontSize="26"
-                                                      IsEditable="True"
-                                                      ItemsSource="{Binding Mods}"
-                                                      IsTextSearchEnabled="True"
-                                                      IsTextSearchCaseSensitive="False" />
-
-                                        </Grid>
-                                    </Grid>
-                                    <Grid x:Name="CommonAdding_Grid"
-                                          Grid.Row="1"
-                                          Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Common_RadioButton, Mode=TwoWay}">
-                                        <Grid Grid.Row="0">
+                                        <Grid Grid.Row="1"
+                                              DataContext="{Binding ItemViewModel}">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition />
                                                 <RowDefinition />
@@ -834,10 +843,11 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="Название:" />
-                                                <TextBox Grid.Column="1"
+                                                <TextBox Text="{Binding ToAdd.Header, Mode=OneWayToSource}"
+                                                         Grid.Column="1"
                                                          HorizontalAlignment="Left"
-                                                         Margin="15,0"
                                                          VerticalAlignment="Center"
+                                                         Margin="15,0"
                                                          Width="250"
                                                          HorizontalScrollBarVisibility="Auto"
                                                          VerticalContentAlignment="Center" />
@@ -848,7 +858,8 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="Количество:" />
-                                                <control:IntegerUpDown Grid.Column="1"
+                                                <control:IntegerUpDown Value="{Binding ToAdd.Count, Mode=TwoWay}"
+                                                                       Grid.Column="1"
                                                                        HorizontalAlignment="Left"
                                                                        MinValue="1"
                                                                        Margin="15,0" />
@@ -859,7 +870,8 @@
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="Цена:" />
-                                                <control:IntegerUpDown MinValue="1"
+                                                <control:IntegerUpDown Value="{Binding ToAdd.Price, Mode=TwoWay}"
+                                                                       MinValue="1"
                                                                        Grid.Column="1"
                                                                        Margin="15,0"
                                                                        HorizontalAlignment="Left" />
@@ -876,20 +888,21 @@
                                                           Width="250"
                                                           Margin="15,0"
                                                           ItemsSource="{Binding Mods}"
+                                                          Text="{Binding ToAdd.Mod, Mode=OneWayToSource}"
                                                           IsEditable="True"
                                                           IsTextSearchEnabled="True"
                                                           IsTextSearchCaseSensitive="False" />
                                             </Grid>
                                         </Grid>
+                                        <Button Content="Добавить"
+                                                Command="{Binding ItemViewModel.AddItemCommand}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Padding="50,10"
+                                                Grid.Row="3" />
                                     </Grid>
-                                    <Button HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Padding="50,10"
-                                            Grid.Row="3"
-                                            Content="Добавить" />
                                 </Grid>
                             </Grid>
-
                         </Grid>
                     </Grid>
                 </Grid>
