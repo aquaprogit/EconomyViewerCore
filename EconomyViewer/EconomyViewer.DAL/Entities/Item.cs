@@ -40,9 +40,10 @@ public class Item : INotifyPropertyChanged, ICloneable
     public string Mod { get; init; } = string.Empty;
     public string? StringFormat => ToString();
 
-    public Item()
+    public Item() { }
+    public Item(bool isEmpty)
     {
-        _isEmptyItem = true;
+        _isEmptyItem = isEmpty;
     }
     public Item(string header, int count, int price, string mod, int id = 0)
     {
