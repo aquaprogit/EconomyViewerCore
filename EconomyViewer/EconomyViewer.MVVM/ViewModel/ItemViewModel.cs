@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using EconomyViewer.DAL.Entities;
 using EconomyViewer.DAL.EF;
 using EconomyViewer.MVVM.Command;
+using EconomyViewer.MVVM.Helper;
 
 namespace EconomyViewer.MVVM.ViewModel;
 
@@ -13,11 +13,21 @@ public class ItemViewModel : ViewModelBase
     private Item? _selectedItem;
     private List<Item> _items;
     private Item? _selectedCopy;
+    private List<CheckBoxData> _data;
+    private Server _server;
 
-    public ItemViewModel(List<Item>? items)
+    public ItemViewModel(Server server)
     {
-        _items = items ?? throw new ArgumentNullException(nameof(items));
+        if (server == null)
+            return;
+        _server = server;
+
+        Items = server.Items;
+        SelectedItem = new Item();
+        SelectedCopy = new Item();
+
         ToSumUpItems = new ItemList();
+
         RemoveItemCommand = new RelayCommand((obj) => {
             ToSumUpItems.Remove(ToSumUpItems.Last());
             OnPropertyChanged(nameof(TotalSum));
@@ -43,8 +53,25 @@ public class ItemViewModel : ViewModelBase
             ApplicationContext.Context.Remove(SelectedItem);
             ApplicationContext.Context.SaveChanges();
         }, (obj) => SelectedItem is not null);
+        SwitchAllModsCommand = new RelayCommand((state) => {
+            ModsToStates.ForEach(d => d.IsChecked = (bool)state);
+        }, (obj) => SelectedItem is not null);
     }
-
+    public List<Item> Items {
+        get => _items;
+        private set {
+            _items = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(Headers));
+        }
+    }
+    public Item? SelectedItem {
+        get => _selectedItem;
+        set {
+            _selectedItem = value;
+            OnPropertyChanged();
+        }
+    }
     public Item? SelectedCopy {
         get => _selectedCopy;
         private set {
@@ -52,25 +79,33 @@ public class ItemViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    public List<Item> Items {
-        get => _items;
-        set {
-            _items = value;
-            ClearItemsCommand.Execute(this);
-            OnPropertyChanged(nameof(SelectedCopy));
-            OnPropertyChanged(nameof(Headers));
+    public List<string> Mods => Items.Select(i => i.Mod)
+                                     .Distinct()
+                                     .OrderBy(_ => _)
+                                     .ToList();
+    public List<CheckBoxData> ModsToStates {
+        get {
+            if (_data != null)
+                return _data;
+            List<CheckBoxData> coll = new(Mods.Select(c => new CheckBoxData() { Header = c, IsChecked = false }));
+            coll.ToList().ForEach(i => i.PropertyChanged += (sender, e) => {
+                OnPropertyChanged(nameof(ModsToStates));
+                OnPropertyChanged(nameof(Filter));
+                OnPropertyChanged(nameof(Headers));
+            });
+            return _data = coll;
         }
-    }
-    public List<string> Headers => Items?.Select(i => i.Header).ToList() ?? new List<string>();
-    public Item SelectedItem {
-        get => _selectedItem ?? new Item();
         set {
-            _selectedItem = value;
+            _data = value;
             OnPropertyChanged();
         }
     }
-    public string SelectedHeader {
-        get => _selectedItem?.Header ?? string.Empty;
+    public List<string> Filter => ModsToStates.Where(d => d.IsChecked).Select(d => d.Header).ToList();
+    public List<string> Headers => Items.Where(i => Filter.Count == 0 || Filter.Contains(i.Mod))
+                                        .Select(i => i.Header)
+                                        .ToList() ?? new List<string>();
+    public string? SelectedHeader {
+        get => _selectedItem?.Header;
         set {
             if (value == null)
             {
@@ -79,18 +114,21 @@ public class ItemViewModel : ViewModelBase
             else if (Headers.Contains(value))
             {
                 SelectedItem = Items.Find(item => item.Header == value)!;
-                SelectedCopy = SelectedItem.Clone() as Item;
+                SelectedCopy = (Item)SelectedItem.Clone();
                 if (_selectedCopy != null)
-                    SelectedCopy!.PropertyChanged += (sender, e) => { OnPropertyChanged(nameof(SelectedCopy)); };
+                    SelectedCopy.PropertyChanged += (sender, e) => { OnPropertyChanged(nameof(SelectedCopy)); };
             }
         }
     }
+
     public ItemList ToSumUpItems { get; set; }
     public string ToSumUpContent => string.Join('\n', ToSumUpItems.Select(i => i.ToString()));
     public int TotalSum => ToSumUpItems.Sum(i => i.Price);
+
     public RelayCommand AddItemCommand { get; }
     public RelayCommand RemoveItemCommand { get; }
     public RelayCommand ClearItemsCommand { get; }
     public RelayCommand SaveEditChangesCommand { get; }
     public RelayCommand DeleteItemCommand { get; }
+    public RelayCommand SwitchAllModsCommand { get; }
 }

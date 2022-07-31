@@ -143,8 +143,7 @@
                         </Button.Background>
                     </Button>
                 </Grid>
-                <Grid Grid.Row="1"
-                      DataContext="{Binding ServerViewModel}">
+                <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="25" />
@@ -181,7 +180,8 @@
                                     <ColumnDefinition Width="55" />
                                     <ColumnDefinition Width="3*" />
                                 </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0">
+                                <Grid Grid.Column="0"
+                                      DataContext="{Binding ServerViewModel}">
                                     <StackPanel>
                                         <TextBlock Text="Сервер:"
                                                    Margin="5,0,0,5" />
@@ -255,12 +255,12 @@
                                                 </Grid.Resources>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition />
-                                                    <RowDefinition Height="35" />
+                                                    <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
                                                 <ListView BorderBrush="{x:Null}"
                                                           BorderThickness="0"
                                                           ItemTemplate="{StaticResource ResourceKey=Template}"
-                                                          ItemsSource="{Binding Data, UpdateSourceTrigger=PropertyChanged}"
+                                                          ItemsSource="{Binding ItemViewModel.ModsToStates, UpdateSourceTrigger=PropertyChanged}"
                                                           HorizontalContentAlignment="Stretch">
                                                     <ListView.ItemContainerStyle>
                                                         <Style TargetType="{x:Type ListViewItem}">
@@ -281,16 +281,19 @@
                                                     </ListView.ItemContainerStyle>
                                                 </ListView>
                                                 <CheckBox Grid.Row="1"
+                                                          Content="Выбрать всё"
+                                                          Margin="0,10,0,0"
+                                                          VerticalContentAlignment="Center"
+                                                          Command="{Binding ItemViewModel.SwitchAllModsCommand}"
+                                                          CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=IsChecked}"
                                                           IsEnabled="{Binding ElementName=MainSelectServer_ComboBox, Path=SelectedIndex, Converter={StaticResource SelectedIndexToBoolConverter}}">
-                                                    <Label Content="Выбрать всё"
-                                                           VerticalContentAlignment="Center" />
                                                 </CheckBox>
                                             </Grid>
                                         </GroupBox>
                                     </StackPanel>
                                 </Grid>
                                 <Grid Grid.Column="2"
-                                      DataContext="{Binding ItemViewModel}">
+                                      DataContext="{Binding ServerViewModel.ItemViewModel}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="4*" />
