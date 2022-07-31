@@ -23,8 +23,8 @@ public class ItemViewModel : ViewModelBase
         _server = server;
 
         Items = server.Items;
-        SelectedItem = new Item();
-        SelectedCopy = new Item();
+        SelectedItem = new Item(true);
+        SelectedCopy = new Item(true);
 
         ToSumUpItems = new ItemList();
 
@@ -109,7 +109,7 @@ public class ItemViewModel : ViewModelBase
         set {
             if (value == null)
             {
-                SelectedCopy = new Item();
+                SelectedCopy = new Item(true);
             }
             else if (Headers.Contains(value))
             {

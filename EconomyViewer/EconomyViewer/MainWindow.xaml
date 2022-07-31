@@ -165,7 +165,7 @@
                         </Grid.Resources>
                         <Grid x:Name="Main_Grid"
                               Grid.Row="1"
-                              Visibility="Visible">
+                              Visibility="Hidden">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="45" />
                                 <RowDefinition />
@@ -496,7 +496,7 @@
                             </Grid>
                         </Grid>
                         <Grid x:Name="Edit_Grid"
-                              Visibility="Hidden">
+                              Visibility="Visible">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="45" />
                                 <RowDefinition />
@@ -511,7 +511,8 @@
                                     <ColumnDefinition Width="55" />
                                     <ColumnDefinition Width="3*" />
                                 </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0">
+                                <Grid Grid.Column="0"
+                                      DataContext="{Binding ServerViewModel}">
                                     <StackPanel>
                                         <TextBlock Text="Сервер:"
                                                    Margin="5,0,0,5" />
@@ -552,11 +553,9 @@
                                                     </Style>
                                                 </StackPanel.Resources>
                                                 <RadioButton Content="Редактировать"
-                                                             Tag="Edit"
                                                              IsChecked="True"
                                                              x:Name="Edit_RadioButton" />
                                                 <RadioButton Content="Удалить"
-                                                             Tag="Delete"
                                                              IsChecked="False"
                                                              x:Name="Delete_RadioButton" />
                                             </StackPanel>
@@ -564,6 +563,7 @@
                                     </StackPanel>
                                 </Grid>
                                 <Grid Grid.Column="2"
+                                      DataContext="{Binding ServerViewModel.ItemViewModel}"
                                       IsEnabled="{Binding ElementName=EditSelectItem_ComboBox, Path=SelectedIndex, Converter={StaticResource SelectedIndexToBoolConverter}}">
                                     <Grid Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Edit_RadioButton}">
                                         <Grid.RowDefinitions>
@@ -593,7 +593,7 @@
                                                          HorizontalScrollBarVisibility="Auto"
                                                          VerticalAlignment="Center"
                                                          HorizontalAlignment="Left"
-                                                         Text="{Binding Path=ItemViewModel.SelectedItem.Header, Mode=TwoWay}">
+                                                         Text="{Binding SelectedItem.Header, Mode=TwoWay}">
                                                 </TextBox>
 
                                             </Grid>
@@ -608,7 +608,7 @@
                                                                        Grid.Column="1"
                                                                        VerticalAlignment="Center"
                                                                        HorizontalAlignment="Left"
-                                                                       Value="{Binding ItemViewModel.SelectedItem.Count, Mode=TwoWay}" />
+                                                                       Value="{Binding SelectedItem.Count, Mode=TwoWay}" />
                                             </Grid>
                                             <Grid Grid.Row="2">
                                                 <Grid.ColumnDefinitions>
@@ -621,7 +621,7 @@
                                                                        Margin="15,0"
                                                                        HorizontalAlignment="Left"
                                                                        VerticalAlignment="Center"
-                                                                       Value="{Binding ItemViewModel.SelectedItem.Price, Mode=TwoWay}" />
+                                                                       Value="{Binding SelectedItem.Price, Mode=TwoWay}" />
                                             </Grid>
                                             <Grid Grid.Row="3">
                                                 <Grid.ColumnDefinitions>
@@ -637,7 +637,7 @@
                                                           VerticalAlignment="Center"
                                                           Width="250"
                                                           ItemsSource="{Binding Mods, Mode=OneWay, UpdateSourceTrigger=LostFocus}"
-                                                          Text="{Binding ItemViewModel.SelectedItem.Mod, Mode=TwoWay}" />
+                                                          Text="{Binding SelectedItem.Mod, Mode=TwoWay}" />
                                             </Grid>
                                         </Grid>
                                         <Grid Grid.Row="3">
@@ -646,7 +646,7 @@
                                                     VerticalAlignment="Center"
                                                     Width="Auto"
                                                     Padding="15,10"
-                                                    Command="{Binding ItemViewModel.SaveEditChangesCommand}" />
+                                                    Command="{Binding SaveEditChangesCommand}" />
                                         </Grid>
                                     </Grid>
                                     <Grid Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Delete_RadioButton}">
@@ -657,7 +657,7 @@
                                             <RowDefinition Height="1*" />
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="1"
-                                              DataContext="{Binding ItemViewModel.SelectedItem}">
+                                              DataContext="{Binding SelectedItem}">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition />
                                                 <RowDefinition />
@@ -712,7 +712,7 @@
                                             <Button HorizontalAlignment="Center"
                                                     VerticalAlignment="Center"
                                                     Width="200"
-                                                    Command="{Binding ItemViewModel.DeleteItemCommand}"
+                                                    Command="{Binding DeleteItemCommand}"
                                                     Content="Удалить"
                                                     Padding="20,10" />
                                         </Grid>
