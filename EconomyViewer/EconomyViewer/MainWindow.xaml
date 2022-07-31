@@ -763,38 +763,37 @@
                                                 <RadioButton x:Name="Common_RadioButton"
                                                              Tag="Common"
                                                              Content="Обычный"
-                                                             IsChecked="True" />
+                                                             IsChecked="False" />
                                                 <RadioButton x:Name="Fast_RadioButton"
                                                              Tag="Fast"
                                                              Content="Быстрый"
-                                                             IsChecked="False" />
+                                                             IsChecked="True" />
                                             </StackPanel>
                                         </GroupBox>
                                     </StackPanel>
                                 </Grid>
                                 <!--Fast Adding Grid-->
                                 <Grid Grid.Column="2"
+                                      DataContext="{Binding ItemViewModel}"
                                       Visibility="{Binding IsChecked, Converter={StaticResource BoolToVisibilityConverter}, ElementName=Fast_RadioButton, Mode=OneWay}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
-                                    <RichTextBox Margin="15"
-                                                 FontSize="18"
-                                                 MinHeight="300"
-                                                 Height="300"
-                                                 SelectionBrush="#FFFFC80B"
-                                                 ScrollViewer.CanContentScroll="True"
-                                                 VerticalScrollBarVisibility="Auto"
-                                                 HorizontalScrollBarVisibility="Visible">
-                                        <RichTextBox.Resources>
-                                            <Style TargetType="{x:Type Paragraph}">
-                                                <Setter Property="Margin"
-                                                        Value="0" />
-                                            </Style>
-                                        </RichTextBox.Resources>
-                                    </RichTextBox>
+                                    <TextBox Margin="15"
+                                             FontSize="18"
+                                             MinHeight="300"
+                                             MaxHeight="300"
+                                             VerticalAlignment="Stretch"
+                                             HorizontalAlignment="Stretch"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True"
+                                             Text="{Binding FastAddingText, UpdateSourceTrigger=PropertyChanged}"
+                                             HorizontalScrollBarVisibility="Auto"
+                                             VerticalScrollBarVisibility="Hidden"
+                                             ScrollViewer.CanContentScroll="True">
+                                    </TextBox>
                                     <Grid Grid.Row="1"
                                           Margin="15">
                                         <Grid.ColumnDefinitions>
@@ -807,6 +806,7 @@
                                                   VerticalAlignment="Center"
                                                   Width="250"
                                                   FontSize="26"
+                                                  Margin="15,0"
                                                   IsEditable="True"
                                                   ItemsSource="{Binding Mods}"
                                                   IsTextSearchEnabled="True"
