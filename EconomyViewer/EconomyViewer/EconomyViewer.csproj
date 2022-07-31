@@ -32,6 +32,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EconomyViewer.Converter\EconomyViewer.Converter.csproj" />
     <ProjectReference Include="..\EconomyViewer.DAL\EconomyViewer.DAL.csproj" />
     <ProjectReference Include="..\EconomyViewer.MVVM\EconomyViewer.MVVM.csproj" />

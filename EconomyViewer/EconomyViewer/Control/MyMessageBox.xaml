@@ -1,0 +1,128 @@
+﻿<Window x:Class="EconomyViewer.Control.MyMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:EconomyViewer"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
+        UseLayoutRounding="True"
+        Title=""
+        MinHeight="225"
+        Width="Auto"
+        MinWidth="450"
+        MaxWidth="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              Background="White"
+              MinHeight="69">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25*" />
+                    <ColumnDefinition Width="86*" />
+                </Grid.ColumnDefinitions>
+                <Image Name="Image_MessageBox"
+                       Width="50"
+                       Height="50"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="30,40,0,0"
+                       Visibility="Visible"
+                       RenderOptions.BitmapScalingMode="HighQuality">
+                    <Image.Source>
+                        <BitmapImage x:Name="ImageBitMap"
+                                     UriSource="/Assets/info.png" />
+                    </Image.Source>
+                </Image>
+                <TextBlock Name="TextBlock_Message"
+                           MaxWidth="310"
+                           Grid.Column="1"
+                           Width="Auto"
+                           FontSize="16"
+                           TextWrapping="WrapWithOverflow"
+                           Text=""
+                           VerticalAlignment="Top"
+                           Margin="10,55,20,0" />
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1"
+              Background="#FFCFEEFF"
+              MinHeight="49">
+            <DockPanel Margin="5,0">
+
+                <!-- Cancel Button -->
+                <Button Name="Button_Cancel"
+                        MinWidth="88"
+                        MaxWidth="160"
+                        Height="26"
+                        Margin="5,0"
+                        HorizontalAlignment="Right"
+                        Visibility="Collapsed"
+                        IsCancel="True"
+                        DockPanel.Dock="Right"
+                        Click="Button_Cancel_Click">
+                    <Label Name="Label_Cancel"
+                           Padding="0"
+                           Margin="10,0">Отмена</Label>
+                </Button>
+                <!-- End Cancel Button -->
+
+                <!-- No Button -->
+                <Button Name="Button_No"
+                        MinWidth="88"
+                        MaxWidth="160"
+                        Height="26"
+                        Margin="5,0"
+                        HorizontalAlignment="Right"
+                        Visibility="Collapsed"
+                        DockPanel.Dock="Right"
+                        Click="Button_No_Click">
+                    <Label Name="Label_No"
+                           Padding="0"
+                           Margin="10,0">Нет</Label>
+                </Button>
+                <!-- End No Button -->
+
+                <!-- Yes Button -->
+                <Button Name="Button_Yes"
+                        MinWidth="88"
+                        MaxWidth="160"
+                        Height="26"
+                        Margin="35,0,5,0"
+                        HorizontalAlignment="Right"
+                        Visibility="Collapsed"
+                        DockPanel.Dock="Right"
+                        Click="Button_Yes_Click">
+                    <Label Name="Label_Yes"
+                           Padding="0"
+                           Margin="10,0">Да</Label>
+                </Button>
+                <!-- End Yes Button -->
+
+                <!-- OK Button -->
+                <Button Name="Button_OK"
+                        MinWidth="88"
+                        MaxWidth="160"
+                        Margin="35,0,5,0"
+                        HorizontalAlignment="Right"
+                        Height="26"
+                        Click="Button_OK_Click">
+                    <Label Name="Label_Ok"
+                           Padding="0"
+                           Margin="10,0">_OK</Label>
+                </Button>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>
