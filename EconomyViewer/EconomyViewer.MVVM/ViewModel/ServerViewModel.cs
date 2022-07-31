@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using EconomyViewer.DAL.EF;
 using EconomyViewer.DAL.Entities;
+using EconomyViewer.MVVM.Helper;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +13,6 @@ namespace EconomyViewer.MVVM.ViewModel;
 public class ServerViewModel : ViewModelBase
 {
     private string? _selectedServerName;
-
     private List<Server>? Servers => ApplicationContext.Context.Servers?.Include(s => s.Items).ToList();
     private Server? SelectedServer => Servers?.FirstOrDefault(s => s.Name == SelectedServerName);
     public List<string>? ServerNames => Servers?.Select(s => s.Name)
@@ -23,15 +24,17 @@ public class ServerViewModel : ViewModelBase
                 return;
             _selectedServerName = value;
             OnPropertyChanged(nameof(SelectedServer));
-            ItemViewModel = new ItemViewModel(SelectedServer!);
+            ItemViewModel = new ItemViewModel(SelectedServer!, _handler);
         }
     }
 
     public ItemViewModel ItemViewModel { get; set; }
-    public ServerViewModel()
+    private EventHandler<MVVMMessageBoxEventArgs> _handler;
+    public ServerViewModel(EventHandler<MVVMMessageBoxEventArgs> handler)
     {
         ApplicationContext.Context.SavedChanges += Context_SavedChanges;
-        ItemViewModel = new ItemViewModel(SelectedServer!);
+        _handler = handler;
+        ItemViewModel = new ItemViewModel(SelectedServer!, handler);
 
     }
 

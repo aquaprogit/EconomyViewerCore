@@ -124,11 +124,11 @@ namespace EconomyViewer.Utility
         private void DisplayImage(MessageBoxImage image)
         {
             string path = image switch {
-                MessageBoxImage.Exclamation => "/Assets/warning.png",
-                MessageBoxImage.Error => "/Assets/error.png",
-                MessageBoxImage.Information => "/Assets/info.png",
-                MessageBoxImage.Question => "/Assets/help.png",
-                _ => "/Assets/warning.png",
+                MessageBoxImage.Exclamation => "Assets/warning.png",
+                MessageBoxImage.Error => "Assets/error.png",
+                MessageBoxImage.Information => "Assets/info.png",
+                MessageBoxImage.Question => "Assets/help.png",
+                _ => "Assets/warning.png",
             };
             Image_MessageBox.Source = new BitmapImage(new Uri(path, UriKind.Relative));
             Image_MessageBox.Visibility = Visibility.Visible;

@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using EconomyViewer.MVVM.Helper;
 using EconomyViewer.MVVM.ViewModel;
 
 namespace EconomyViewer;
@@ -14,7 +15,7 @@ public partial class MainWindow : Window
     private readonly List<Grid> _contentGrids;
     public MainWindow()
     {
-        ServerViewModel = new ServerViewModel();
+        ServerViewModel = new ServerViewModel((sender, e) => e.Show());
         DataContext = this;
         InitializeComponent();
         _contentGrids = new() { Main_Grid, Add_Grid, Edit_Grid };

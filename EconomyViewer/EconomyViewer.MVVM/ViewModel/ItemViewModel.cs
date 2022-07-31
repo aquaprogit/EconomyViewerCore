@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 using EconomyViewer.DAL.EF;
 using EconomyViewer.DAL.Entities;
 using EconomyViewer.MVVM.Command;
 using EconomyViewer.MVVM.Helper;
+using EconomyViewer.Utility;
 
 namespace EconomyViewer.MVVM.ViewModel;
 
@@ -15,11 +18,11 @@ public class ItemViewModel : ViewModelBase
     private Item? _selectedCopy;
     private List<CheckBoxData> _data;
 
-    public ItemViewModel(Server server)
+    public ItemViewModel(Server server, EventHandler<MVVMMessageBoxEventArgs> handler)
     {
         if (server == null)
             return;
-
+        MessageBoxRequest += handler;
         Items = server.Items;
         SelectedItem = new Item(true);
         SelectedCopy = new Item(true);
@@ -32,18 +35,15 @@ public class ItemViewModel : ViewModelBase
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
         }, (obj) => ToSumUpItems.Any());
-        AddItemCommand = new RelayCommand((obj) => {
+        AddToSumUpCommand = new RelayCommand((obj) => {
             ToSumUpItems.Add(SelectedCopy!);
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
             OnPropertyChanged(nameof(ToSumUpItems));
         }, (obj) => true);
         ClearToSumUpCommand = new RelayCommand((obj) => {
-            ToSumUpItems.Clear();
-            OnPropertyChanged(nameof(TotalSum));
-            OnPropertyChanged(nameof(ToSumUpContent));
-            OnPropertyChanged(nameof(ToSumUpItems));
-        }, (obj) => true);
+            MessageBox_Show(ProcessResult, "Уверены что хотите очистить список сум?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+        }, (obj) => ToSumUpItems.Any());
         SaveEditedItemCommand = new RelayCommand(obj => {
             ApplicationContext.Context.Update(SelectedItem);
             ApplicationContext.Context.SaveChanges();
@@ -64,6 +64,18 @@ public class ItemViewModel : ViewModelBase
             return ToAdd.Count > 0 && ToAdd.Price > 0 && isValidates;
         });
     }
+
+    private void ProcessResult(MessageBoxResult result)
+    {
+        if (result == MessageBoxResult.Yes)
+        {
+            ToSumUpItems.Clear();
+            OnPropertyChanged(nameof(TotalSum));
+            OnPropertyChanged(nameof(ToSumUpContent));
+            OnPropertyChanged(nameof(ToSumUpItems));
+        }
+    }
+
     public List<Item> Items {
         get => _items;
         private set {
