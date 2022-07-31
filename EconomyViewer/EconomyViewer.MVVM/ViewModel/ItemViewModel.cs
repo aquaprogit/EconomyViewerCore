@@ -39,8 +39,7 @@ public class ItemViewModel : ViewModelBase
             OnPropertyChanged(nameof(ToSumUpItems));
         }, (obj) => true);
         ClearToSumUpCommand = new RelayCommand((obj) => {
-            if (MyMessageBox.Show)
-                ToSumUpItems.Clear();
+            ToSumUpItems.Clear();
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
             OnPropertyChanged(nameof(ToSumUpItems));
@@ -54,7 +53,7 @@ public class ItemViewModel : ViewModelBase
             ApplicationContext.Context.SaveChanges();
         }, (obj) => SelectedItem is not null);
         SwitchAllModsCommand = new RelayCommand((state) => {
-            ModsToStates.ForEach(d => d.IsChecked = (bool)state);
+            ModsToStates.ForEach(d => d.IsChecked = (bool)state!);
         }, (obj) => SelectedItem is not null);
         AddItemCommand = new RelayCommand((obj) => {
             ApplicationContext.Context.Servers!.First(s => s.Name == server.Name).Items.Add(ToAdd);

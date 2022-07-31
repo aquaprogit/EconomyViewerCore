@@ -7,7 +7,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace EconomyViewer.Control
+namespace EconomyViewer.Utility
 {
     /// <summary>
     /// Логика взаимодействия для MyMessageBox.xaml
@@ -25,22 +25,22 @@ namespace EconomyViewer.Control
         }
 
         internal string OkButtonText {
-            get => Label_Ok.Content.ToString();
+            get => Label_Ok.Content.ToString()!;
             set => Label_Ok.Content = value.TryAddKeyboardAccellerator();
         }
 
         internal string CancelButtonText {
-            get => Label_Cancel.Content.ToString();
+            get => Label_Cancel.Content.ToString()!;
             set => Label_Cancel.Content = value.TryAddKeyboardAccellerator();
         }
 
         internal string YesButtonText {
-            get => Label_Yes.Content.ToString();
+            get => Label_Yes.Content.ToString()!;
             set => Label_Yes.Content = value.TryAddKeyboardAccellerator();
         }
 
         internal string NoButtonText {
-            get => Label_No.Content.ToString();
+            get => Label_No.Content.ToString()!;
             set => Label_No.Content = value.TryAddKeyboardAccellerator();
         }
         public MessageBoxResult Result { get; set; }
@@ -123,28 +123,13 @@ namespace EconomyViewer.Control
 
         private void DisplayImage(MessageBoxImage image)
         {
-            string path;
-
-            switch (image)
-            {
-                case MessageBoxImage.Exclamation:
-                    path = "/Assets/warning.png";
-                    break;
-                case MessageBoxImage.Error:
-                    path = "/Assets/error.png";
-                    break;
-                case MessageBoxImage.Information:
-                    path = "/Assets/info.png";
-                    break;
-                case MessageBoxImage.Question:
-                    path = "/Assets/help.png";
-                    break;
-                case MessageBoxImage.None:
-                default:
-                    path = "/Assets/warning.png";
-                    break;
-            }
-
+            string path = image switch {
+                MessageBoxImage.Exclamation => "/Assets/warning.png",
+                MessageBoxImage.Error => "/Assets/error.png",
+                MessageBoxImage.Information => "/Assets/info.png",
+                MessageBoxImage.Question => "/Assets/help.png",
+                _ => "/Assets/warning.png",
+            };
             Image_MessageBox.Source = new BitmapImage(new Uri(path, UriKind.Relative));
             Image_MessageBox.Visibility = Visibility.Visible;
         }

@@ -17,10 +17,7 @@
     <None Remove="Assets\close1.png" />
     <None Remove="Assets\copy.png" />
     <None Remove="Assets\edit.png" />
-    <None Remove="Assets\error.png" />
     <None Remove="Assets\exchange.png" />
-    <None Remove="Assets\help.png" />
-    <None Remove="Assets\info.png" />
     <None Remove="Assets\menu.png" />
     <None Remove="Assets\minimize.png" />
     <None Remove="Assets\money.png" />
@@ -28,11 +25,6 @@
     <None Remove="Assets\submit.png" />
     <None Remove="Assets\trash.png" />
     <None Remove="Assets\unchecked.png" />
-    <None Remove="Assets\warning.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,16 +59,7 @@
     <Resource Include="Assets\edit.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\error.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="Assets\exchange.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\help.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\info.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\menu.png">
@@ -98,9 +81,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\unchecked.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\warning.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
