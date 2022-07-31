@@ -9,7 +9,7 @@ public class Item : INotifyPropertyChanged, ICloneable
     private static readonly Regex _itemPattern = new Regex(@"(?<Header>.+)\s(?<Count>[0-9]+) шт. - (?<Price>[0-9]+)$");
     private static readonly Regex _singleItemPattent = new Regex(@"(?<Header>.+)\W+(?<Price>\d+)");
     private int _count = 1;
-    private int _price;
+    private int _price = 1;
     private readonly bool _isEmptyItem = false;
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -39,9 +39,8 @@ public class Item : INotifyPropertyChanged, ICloneable
     public int PriceForOne => Price / Count;
     public string Mod { get; init; } = string.Empty;
     public string? StringFormat => ToString();
-
     public Item() { }
-    public Item(bool isEmpty)
+    public Item(bool isEmpty = false)
     {
         _isEmptyItem = isEmpty;
     }

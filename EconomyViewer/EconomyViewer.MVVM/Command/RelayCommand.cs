@@ -5,8 +5,8 @@ namespace EconomyViewer.MVVM.Command;
 
 public class RelayCommand : ICommand
 {
-    private Predicate<object>? _canExecute;
-    private Action<object>? _execute;
+    private readonly Predicate<object>? _canExecute;
+    private readonly Action<object>? _execute;
 
     public RelayCommand(Action<object>? execute, Predicate<object>? canExecute)
     {
@@ -15,8 +15,8 @@ public class RelayCommand : ICommand
     }
 
     public event EventHandler CanExecuteChanged {
-        add { CommandManager.RequerySuggested += value; }
-        remove { CommandManager.RequerySuggested -= value; }
+        add => CommandManager.RequerySuggested += value;
+        remove => CommandManager.RequerySuggested -= value;
     }
 
     public bool CanExecute(object? parameter)

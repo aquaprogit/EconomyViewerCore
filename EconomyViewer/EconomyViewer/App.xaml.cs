@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-using EconomyViewer.Utility.Parser;
 using EconomyViewer.DAL.EF;
 using EconomyViewer.DAL.Entities;
+using EconomyViewer.Utility.Parser;
 
 namespace EconomyViewer;
 /// <summary>
@@ -37,7 +36,7 @@ public partial class App : Application
     }
     private async void Application_Startup(object sender, StartupEventArgs e)
     {
-        Task filling = FillContextAsync();
+        var filling = FillContextAsync();
         MainWindow window = new MainWindow();
         window.Show();
         await filling;

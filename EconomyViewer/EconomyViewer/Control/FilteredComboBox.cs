@@ -67,7 +67,9 @@ public class FilteredComboBox : ComboBox
         if ((e.Key == Key.Up || e.Key == Key.Down) && SelectedIndex != -1)
             return;
         if (e.Key is Key.Tab or Key.Enter)
+        {
             ClearFilter();
+        }
         else
         {
             if (Text != _oldFilter)
@@ -105,7 +107,9 @@ public class FilteredComboBox : ComboBox
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {
         if (e.Key is Key.Tab or Key.Enter)
+        {
             IsDropDownOpen = false;
+        }
         else if (e.Key == Key.Escape)
         {
             IsDropDownOpen = false;

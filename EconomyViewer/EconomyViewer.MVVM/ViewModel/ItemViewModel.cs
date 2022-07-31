@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using EconomyViewer.DAL.Entities;
 using EconomyViewer.DAL.EF;
+using EconomyViewer.DAL.Entities;
 using EconomyViewer.MVVM.Command;
 using EconomyViewer.MVVM.Helper;
 
@@ -14,21 +14,20 @@ public class ItemViewModel : ViewModelBase
     private List<Item> _items;
     private Item? _selectedCopy;
     private List<CheckBoxData> _data;
-    private Server _server;
 
     public ItemViewModel(Server server)
     {
         if (server == null)
             return;
-        _server = server;
 
         Items = server.Items;
         SelectedItem = new Item(true);
         SelectedCopy = new Item(true);
+        ToAdd = new Item();
 
         ToSumUpItems = new ItemList();
 
-        RemoveItemCommand = new RelayCommand((obj) => {
+        RemoveFromSumUpCommand = new RelayCommand((obj) => {
             ToSumUpItems.Remove(ToSumUpItems.Last());
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
@@ -39,13 +38,14 @@ public class ItemViewModel : ViewModelBase
             OnPropertyChanged(nameof(ToSumUpContent));
             OnPropertyChanged(nameof(ToSumUpItems));
         }, (obj) => true);
-        ClearItemsCommand = new RelayCommand((obj) => {
-            ToSumUpItems.Clear();
+        ClearToSumUpCommand = new RelayCommand((obj) => {
+            if (MyMessageBox.Show)
+                ToSumUpItems.Clear();
             OnPropertyChanged(nameof(TotalSum));
             OnPropertyChanged(nameof(ToSumUpContent));
             OnPropertyChanged(nameof(ToSumUpItems));
         }, (obj) => true);
-        SaveEditChangesCommand = new RelayCommand(obj => {
+        SaveEditedItemCommand = new RelayCommand(obj => {
             ApplicationContext.Context.Update(SelectedItem);
             ApplicationContext.Context.SaveChanges();
         }, (obj) => SelectedItem is not null);
@@ -56,6 +56,14 @@ public class ItemViewModel : ViewModelBase
         SwitchAllModsCommand = new RelayCommand((state) => {
             ModsToStates.ForEach(d => d.IsChecked = (bool)state);
         }, (obj) => SelectedItem is not null);
+        AddItemCommand = new RelayCommand((obj) => {
+            ApplicationContext.Context.Servers!.First(s => s.Name == server.Name).Items.Add(ToAdd);
+            ApplicationContext.Context.SaveChanges();
+        }, (obj) => {
+            string toStr = ToAdd.ToString();
+            bool isValidates = ToAdd.Equals(Item.FromString(toStr, ToAdd.Mod));
+            return ToAdd.Count > 0 && ToAdd.Price > 0 && isValidates;
+        });
     }
     public List<Item> Items {
         get => _items;
@@ -79,6 +87,7 @@ public class ItemViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
+    public Item ToAdd { get; private set; }
     public List<string> Mods => Items.Select(i => i.Mod)
                                      .Distinct()
                                      .OrderBy(_ => _)
@@ -125,10 +134,12 @@ public class ItemViewModel : ViewModelBase
     public string ToSumUpContent => string.Join('\n', ToSumUpItems.Select(i => i.ToString()));
     public int TotalSum => ToSumUpItems.Sum(i => i.Price);
 
-    public RelayCommand AddItemCommand { get; }
-    public RelayCommand RemoveItemCommand { get; }
-    public RelayCommand ClearItemsCommand { get; }
-    public RelayCommand SaveEditChangesCommand { get; }
+    public RelayCommand AddToSumUpCommand { get; }
+    public RelayCommand RemoveFromSumUpCommand { get; }
+    public RelayCommand ClearToSumUpCommand { get; }
+    public RelayCommand SaveEditedItemCommand { get; }
     public RelayCommand DeleteItemCommand { get; }
     public RelayCommand SwitchAllModsCommand { get; }
+    public RelayCommand AddItemCommand { get; }
+    public RelayCommand AddRangeItemsCommand { get; }
 }

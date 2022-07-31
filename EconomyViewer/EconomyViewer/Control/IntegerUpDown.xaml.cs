@@ -49,7 +49,7 @@ public partial class IntegerUpDown : UserControl, INotifyPropertyChanged
     public bool IsDecreasable => Value > MinValue;
 
     public static readonly DependencyProperty ValueProperty =
-        DependencyProperty.Register("Value", typeof(int), typeof(IntegerUpDown), new PropertyMetadata(0));
+        DependencyProperty.Register("Value", typeof(int), typeof(IntegerUpDown));
     public static readonly DependencyProperty MaxValueProperty =
         DependencyProperty.Register("MaxValue", typeof(int), typeof(IntegerUpDown), new PropertyMetadata(int.MaxValue));
     public static readonly DependencyProperty MinValueProperty =
@@ -61,9 +61,15 @@ public partial class IntegerUpDown : UserControl, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
     }
 
-    private void UpButton_Click(object sender, RoutedEventArgs e) => Value++;
+    private void UpButton_Click(object sender, RoutedEventArgs e)
+    {
+        Value++;
+    }
 
-    private void DownButton_Click(object sender, RoutedEventArgs e) => Value--;
+    private void DownButton_Click(object sender, RoutedEventArgs e)
+    {
+        Value--;
+    }
 
     private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
     {
