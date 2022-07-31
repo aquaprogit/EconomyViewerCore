@@ -60,17 +60,23 @@
               Background="#FFCFEEFF"
               MinHeight="49">
             <DockPanel Margin="5,0">
+                <DockPanel.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                        <Setter Property="Padding"
+                                Value="15,5" />
+                        <Setter Property="DockPanel.Dock"
+                                Value="Right" />
+                        <Setter Property="Margin"
+                                Value="10,0" />
+                    </Style>
+                </DockPanel.Resources>
 
                 <!-- Cancel Button -->
                 <Button Name="Button_Cancel"
-                        MinWidth="88"
-                        MaxWidth="160"
-                        Height="26"
-                        Margin="5,0"
-                        HorizontalAlignment="Right"
                         Visibility="Collapsed"
                         IsCancel="True"
-                        DockPanel.Dock="Right"
                         Click="Button_Cancel_Click">
                     <Label Name="Label_Cancel"
                            Padding="0"
@@ -80,13 +86,7 @@
 
                 <!-- No Button -->
                 <Button Name="Button_No"
-                        MinWidth="88"
-                        MaxWidth="160"
-                        Height="26"
-                        Margin="5,0"
-                        HorizontalAlignment="Right"
-                        Visibility="Collapsed"
-                        DockPanel.Dock="Right"
+                        Visibility="Visible"
                         Click="Button_No_Click">
                     <Label Name="Label_No"
                            Padding="0"
@@ -96,13 +96,7 @@
 
                 <!-- Yes Button -->
                 <Button Name="Button_Yes"
-                        MinWidth="88"
-                        MaxWidth="160"
-                        Height="26"
-                        Margin="35,0,5,0"
-                        HorizontalAlignment="Right"
-                        Visibility="Collapsed"
-                        DockPanel.Dock="Right"
+                        Visibility="Visible"
                         Click="Button_Yes_Click">
                     <Label Name="Label_Yes"
                            Padding="0"
@@ -112,11 +106,7 @@
 
                 <!-- OK Button -->
                 <Button Name="Button_OK"
-                        MinWidth="88"
-                        MaxWidth="160"
-                        Margin="35,0,5,0"
-                        HorizontalAlignment="Right"
-                        Height="26"
+                        Visibility="Collapsed"
                         Click="Button_OK_Click">
                     <Label Name="Label_Ok"
                            Padding="0"
