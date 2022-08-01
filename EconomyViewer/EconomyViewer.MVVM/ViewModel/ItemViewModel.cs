@@ -29,6 +29,8 @@ public class ItemViewModel : ViewModelBase
     private RelayCommand _addItemCommand;
     private RelayCommand _deleteItemCommand;
     private RelayCommand _clearToSumUpCommand;
+    private string _fastAddingText;
+    private string _fastAddingMod;
 
     public ItemViewModel(Server server, EventHandler<MVVMMessageBoxEventArgs> handler)
     {
@@ -42,7 +44,8 @@ public class ItemViewModel : ViewModelBase
         ToAdd = new Item();
 
         ToSumUpItems = new ItemList();
-
+        _fastAddingMod = "";
+        _fastAddingText = "";
     }
 
     public List<Item> Items {
@@ -110,7 +113,20 @@ public class ItemViewModel : ViewModelBase
             }
         }
     }
-    public string FastAddingText { get; set; }
+    public string FastAddingText {
+        get => _fastAddingText;
+        set {
+            _fastAddingText = value;
+            OnPropertyChanged();
+        }
+    }
+    public string FastAddingMod {
+        get => _fastAddingMod;
+        set {
+            _fastAddingMod = value;
+            OnPropertyChanged();
+        }
+    }
     public ItemList ToSumUpItems { get; set; }
     public string ToSumUpContent => string.Join('\n', ToSumUpItems.Select(i => i.ToString()));
     public int TotalSum => ToSumUpItems.Sum(i => i.Price);
@@ -149,7 +165,8 @@ public class ItemViewModel : ViewModelBase
             ApplicationContext.Context.Remove(SelectedItem!);
             ApplicationContext.Context.Entry(_server).State = EntityState.Modified;
             ApplicationContext.Context.SaveChanges();
-            Items = Items;
+            OnPropertyChanged(nameof(Items));
+            OnPropertyChanged(nameof(Headers));
             SelectedItem = null;
         }, "Уверены что хотите удалить объект?", MessageBoxType.Confirmation);
     }, (obj) => SelectedItem is not null);
@@ -166,6 +183,40 @@ public class ItemViewModel : ViewModelBase
         return ToAdd.Count > 0 && ToAdd.Price > 0 && isValidates;
     });
     public RelayCommand AddRangeItemsCommand => _addRangeItemsCommand ??= new RelayCommand((obj) => {
-
+        if (Mods.Contains(FastAddingMod) == false)
+        {
+            MessageBox_Show(() => {
+                ApplicationContext.Context.Servers!.First(s => s.Name == _server.Name).Items.AddRange(ProcessFastAdding());
+                ApplicationContext.Context.SaveChanges();
+                OnPropertyChanged(nameof(Items));
+                OnPropertyChanged(nameof(Headers));
+            }, "Добавить эти предметы с модом, которого нет в списке?", MessageBoxType.Confirmation);
+        }
+        else
+        {
+            MessageBox_Show(() => {
+                ApplicationContext.Context.Servers!.First(s => s.Name == _server.Name).Items.AddRange(ProcessFastAdding());
+                ApplicationContext.Context.SaveChanges();
+                OnPropertyChanged(nameof(Items));
+                OnPropertyChanged(nameof(Headers));
+            }, "Предметы успешно добавлены!", MessageBoxType.Notifing);
+        }
+    }, (obj) => {
+        return FastAddingMod != string.Empty && FastAddingText.Length > 0;
     });
+    private List<Item> ProcessFastAdding()
+    {
+        if (FastAddingMod == string.Empty || FastAddingText.Length == 0)
+            throw new InvalidOperationException();
+
+        return FastAddingText.Split("\r\n", StringSplitOptions.RemoveEmptyEntries)
+            .Select(str => {
+                var result = Item.FromString(str, FastAddingMod) ?? new Item(true);
+                if (result.ToString() != string.Empty)
+                    FastAddingText = FastAddingText.Replace(str, "");
+                return result;
+            })
+            .Where(i => i.ToString() != string.Empty)
+            .ToList();
+    }
 }

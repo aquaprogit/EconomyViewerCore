@@ -789,7 +789,7 @@
                                              HorizontalAlignment="Stretch"
                                              TextWrapping="Wrap"
                                              AcceptsReturn="True"
-                                             Text="{Binding FastAddingText, UpdateSourceTrigger=PropertyChanged}"
+                                             Text="{Binding FastAddingText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                              HorizontalScrollBarVisibility="Auto"
                                              VerticalScrollBarVisibility="Hidden"
                                              ScrollViewer.CanContentScroll="True">
@@ -809,6 +809,7 @@
                                                   Margin="15,0"
                                                   IsEditable="True"
                                                   ItemsSource="{Binding Mods}"
+                                                  Text="{Binding FastAddingMod, Mode=OneWayToSource, UpdateSourceTrigger=LostFocus}"
                                                   IsTextSearchEnabled="True"
                                                   IsTextSearchCaseSensitive="False" />
 
@@ -817,7 +818,8 @@
                                             VerticalAlignment="Center"
                                             Padding="50,10"
                                             Grid.Row="2"
-                                            Content="Добавить" />
+                                            Content="Добавить"
+                                            Command="{Binding AddRangeItemsCommand}"/>
                                 </Grid>
                                 <!--Common Adding Grid-->
                                 <Grid Grid.Column="2"
