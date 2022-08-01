@@ -36,9 +36,8 @@ public partial class App : Application
     }
     private async void Application_Startup(object sender, StartupEventArgs e)
     {
-        var filling = FillContextAsync();
+        await FillContextAsync();
         MainWindow window = new MainWindow();
         window.Show();
-        await filling;
     }
 }
