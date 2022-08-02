@@ -19,6 +19,7 @@ public partial class MainWindow : Window
         DataContext = this;
         InitializeComponent();
         _contentGrids = new() { Main_Grid, Add_Grid, Edit_Grid };
+        ListViewItem_MouseLeftButtonUp(new ListViewItem() { Tag = "Main" }, null);
     }
     public ServerViewModel ServerViewModel { get; set; }
     #region Navigation Handlers
